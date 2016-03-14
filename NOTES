@@ -1,0 +1,37 @@
+// FULL SCREEN OPTION
+// function mousePressed() {
+//   if (mouseX > 0 && mouseX < 100 && mouseY > 0 && mouseY < 100) {
+//     var fs = fullscreen();
+//     fullscreen(!fs);
+//   }
+// }
+
+
+// LOAD TWO IMAGES
+
+// var bg, ufo;
+//
+// function setup()
+// {
+//   // set canvas size
+//   createCanvas(400, 250);
+//
+//   // hide mouse cursor
+//   noCursor();
+//
+//   // load image
+//   bg = loadImage("greenhall.jpg");
+//   ufo = loadImage("ufo.png");
+// }
+//
+// function draw()
+// {
+//   background(255);
+//
+//   // display background image
+//   image(img, 0, 0);
+//
+//   // display ufo
+//   image(ufo, mouseX, mouseY);
+//
+// }
