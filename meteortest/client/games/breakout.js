@@ -25,6 +25,7 @@ function create() {
 
     game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
+
     //  Init snakeSection array
     for (var i = 1; i <= numSnakeSections-1; i++)
     {
@@ -63,6 +64,7 @@ function update() {
             snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
             snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
         }
+
     }
 
     if (cursors.left.isDown)
@@ -74,6 +76,7 @@ function update() {
         snakeHead.body.angularVelocity = 300;
     }
 
+    game.world.wrap(snakeHead, 0, true);
 }
 
 function render() {
