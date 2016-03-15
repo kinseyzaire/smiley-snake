@@ -2,7 +2,7 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload:
 
 function preload() {
 
-    game.load.image('ball','/public/assets/games/breakout/1.png');
+    game.load.image('ball','./assets/games/breakout/emojis/1.png');
 
 }
 
@@ -14,8 +14,8 @@ var snakeSpacer = 6; //parameter that sets the spacing between sections
 
 function create() {
 
+    game.stage.backgroundColor = "#FFF";
     game.physics.startSystem(Phaser.Physics.ARCADE);
-
     game.world.setBounds(0, 0, 800, 600);
 
     cursors = game.input.keyboard.createCursorKeys();
@@ -74,10 +74,12 @@ function update() {
         snakeHead.body.angularVelocity = 300;
     }
 
+    game.world.wrap(snakeHead, 0, true);
+
 }
 
 function render() {
 
-    game.debug.spriteInfo(snakeHead, 32, 32);
+    // game.debug.spriteInfo(snakeHead, 32, 32);
 
 }
