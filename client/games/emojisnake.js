@@ -3,8 +3,9 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: p
 function preload() {
 
     game.load.image('smiley','./assets/emojis/1.png');
-    game.load.image('new','./assets/emojis/4.png');
-    game.load.image('newer','./assets/emojis/6.png');
+    game.load.image('neck','./assets/emojis/4.png');
+    game.load.image('head','./assets/emojis/6.png');
+    game.load.image('food','./assets/emojis/43.png');
 
 }
 
@@ -23,8 +24,13 @@ function create() {
 
     cursors = game.input.keyboard.createCursorKeys();
 
-    snakeHead = game.add.sprite(w/2, h/2, 'newer');
+    snakeHead = game.add.sprite(w/2, h/2, 'head');
     snakeHead.anchor.setTo(0.5, 0.5);
+
+
+    food = game.add.sprite(w/4, h/4, 'food');
+    food.anchor.setTo(0.5, 0.5);
+
 
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -36,7 +42,7 @@ function create() {
     // var y = 0.5;
     for (var i = 1; i <= numSnakeSections-1; i++)
       if (i == 1) {
-        snakeNeck = game.add.sprite(w/2, h/2, 'new');
+        snakeNeck = game.add.sprite(w/2, h/2, 'neck');
         snakeNeck.anchor.setTo(0.5, 0.5);
       }else{
 
@@ -61,7 +67,22 @@ function update() {
 
       if (checkOverlap())
       {
-        console.log('derp');
+        console.log('endGame');
+
+      }
+      if (checkIfEating())
+      {
+        console.log('eaten');
+        food.kill()
+
+      }
+
+      function checkIfEating(){
+        snake = snakeHead.getBounds();
+        foody = food.getBounds();
+        if(food) {
+        return Phaser.Rectangle.intersects(snake, foody)
+      }
       }
 
       function checkOverlap() {
