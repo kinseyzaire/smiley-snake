@@ -27,10 +27,13 @@ function create() {
 
 
     //  Init snakeSection array
+    var x = 0.5;
+    var y = 0.5;
     for (var i = 1; i <= numSnakeSections-1; i++)
     {
         snakeSection[i] = game.add.sprite(400, 300, 'ball');
-        snakeSection[i].anchor.setTo(0.5, 0.5);
+        snakeSection[i].anchor.setTo(x, y);
+
     }
 
     //  Init snakePath array
@@ -61,8 +64,10 @@ function update() {
 
         for (var i = 1; i <= numSnakeSections - 1; i++)
         {
-            snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
-            snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
+          snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
+          snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
+          // snakeSection[i].body.checkCollision.up = true;
+          // snakeSection[i].body.checkCollision.down = true;
         }
 
     }
@@ -78,7 +83,7 @@ function update() {
 
     game.world.wrap(snakeHead, 0, true);
 
-
+}
 function render() {
 
     // game.debug.spriteInfo(snakeHead, 32, 32);
