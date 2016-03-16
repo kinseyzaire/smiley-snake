@@ -43,17 +43,15 @@ function create() {
     //  Init snakeSection array
     // var x = 0.5;
     // var y = 0.5;
-    for (var i = 1; i <= numSnakeSections-1; i++)
+    for (var i = 1; i <= numSnakeSections-1; i++) {
       if (i == 1) {
         snakeNeck = game.add.sprite(w/2, h/2, 'neck');
         snakeNeck.anchor.setTo(0.5, 0.5);
-      }else{
-
-    {
+      } else {
         snakeSection[i] = game.add.sprite(w/2, h/2, 'smiley');
         snakeSection[i].anchor.setTo(0.5, 0.5);
+      }
     }
-  }
 
     //  Init snakePath array
     for (var i = 0; i <= numSnakeSections * snakeSpacer; i++)
@@ -61,6 +59,13 @@ function create() {
         snakePath[i] = new Phaser.Point(w/2, h/2);
     }
 
+    pauseButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    pauseButton.onDown.add(togglePause, this);
+
+}
+
+function togglePause(){
+  game.paused = !game.paused
 }
 
 function addSmiley() {
@@ -73,6 +78,11 @@ function update() {
     snakeHead.body.velocity.setTo(0, 0);
     snakeHead.body.angularVelocity = 0;
 
+    function generateFood() {
+      food = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), 'food');
+      food.anchor.setTo(0.5, 0.5);
+    }
+
       if (checkOverlap())
       {
 
@@ -82,7 +92,8 @@ function update() {
       if (checkIfEating())
       {
         console.log('eaten');
-        food.kill()
+        food.destroy()
+        generateFood()
 
         var smile = addSmiley()
         snakeSection.push(smile)
@@ -111,30 +122,27 @@ function update() {
         }
 
 
-    if (cursors.up.isDown)
-    {
-        snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
+      snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
-        // Everytime the snake head moves, insert the new location at the start of the array,
-        // and knock the last position off the end
+      // Everytime the snake head moves, insert the new location at the start of the array,
+      // and knock the last position off the end
 
-        var part = snakePath.pop();
+      var part = snakePath.pop();
 
-        part.setTo(snakeHead.x, snakeHead.y);
+      part.setTo(snakeHead.x, snakeHead.y);
 
-        snakePath.unshift(part);
+      snakePath.unshift(part);
 
-        for (var i = 1; i <= numSnakeSections - 1; i++)
-        {
-          if (i == 1) {
-            snakeNeck.x = (snakePath[snakeSpacer]).x
-            snakeNeck.y = (snakePath[snakeSpacer]).y
-          }else{
-          snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
-          snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
-          // snakeSection[i].body.checkCollision.up = true;
-          // snakeSection[i].body.checkCollision.down = true;
-        }
+      for (var i = 1; i <= numSnakeSections - 1; i++)
+      {
+        if (i == 1) {
+          snakeNeck.x = (snakePath[snakeSpacer]).x
+          snakeNeck.y = (snakePath[snakeSpacer]).y
+        }else{
+        snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
+        snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
+        // snakeSection[i].body.checkCollision.up = true;
+        // snakeSection[i].body.checkCollision.down = true;
       }
     }
 
