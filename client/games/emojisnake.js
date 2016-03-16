@@ -43,17 +43,15 @@ function create() {
     //  Init snakeSection array
     // var x = 0.5;
     // var y = 0.5;
-    for (var i = 1; i <= numSnakeSections-1; i++)
+    for (var i = 1; i <= numSnakeSections-1; i++) {
       if (i == 1) {
         snakeNeck = game.add.sprite(w/2, h/2, 'neck');
         snakeNeck.anchor.setTo(0.5, 0.5);
-      }else{
-
-    {
+      } else {
         snakeSection[i] = game.add.sprite(w/2, h/2, 'smiley');
         snakeSection[i].anchor.setTo(0.5, 0.5);
+      }
     }
-  }
 
     //  Init snakePath array
     for (var i = 0; i <= numSnakeSections * snakeSpacer; i++)
@@ -61,6 +59,13 @@ function create() {
         snakePath[i] = new Phaser.Point(w/2, h/2);
     }
 
+    pauseButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    pauseButton.onDown.add(togglePause, this);
+
+}
+
+function togglePause(){
+  game.paused = !game.paused
 }
 
 function update() {
