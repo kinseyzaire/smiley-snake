@@ -58,11 +58,25 @@ function update() {
 
     snakeHead.body.velocity.setTo(0, 0);
     snakeHead.body.angularVelocity = 0;
-    game.physics.overlap(snakeHead, snakeSection, collisionHandler, null, this);
 
-    function collisionHandler() {
-      console.log('made it to handler');
-    }
+      if (checkOverlap())
+      {
+        console.log('collision detected');
+      }
+
+      function checkOverlap() {
+
+        var boundsB = snakeHead.getBounds();
+
+        for (var i = 2; i < snakeSection.length; i++) {
+            var section = snakeSection[i]
+            if(Phaser.Rectangle.intersects(boundsB, section.getBounds())) {
+            return true
+          }
+          }
+          return false
+        }
+
 
     if (cursors.up.isDown)
     {
