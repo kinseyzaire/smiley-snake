@@ -1,1 +1,0 @@
-{"version":3,"sources":["meteor://💻app/app/example-meteor.css"],"names":[],"mappings":"AACA;;AACA;EACI;EACA;;;AAEJ;EACI;EACA;EACA;EACA;EACA;EACA","sourcesContent":["\n/* CSS declarations go here */\nbody {\n    background: #FFF;\n    text-align: center;\n}\ncanvas {\n    position: absolute;\n    top:0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    margin:auto;\n}\n"]}
