@@ -102,30 +102,27 @@ function update() {
         }
 
 
-    if (cursors.up.isDown)
-    {
-        snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
+      snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
-        // Everytime the snake head moves, insert the new location at the start of the array,
-        // and knock the last position off the end
+      // Everytime the snake head moves, insert the new location at the start of the array,
+      // and knock the last position off the end
 
-        var part = snakePath.pop();
+      var part = snakePath.pop();
 
-        part.setTo(snakeHead.x, snakeHead.y);
+      part.setTo(snakeHead.x, snakeHead.y);
 
-        snakePath.unshift(part);
+      snakePath.unshift(part);
 
-        for (var i = 1; i <= numSnakeSections - 1; i++)
-        {
-          if (i == 1) {
-            snakeNeck.x = (snakePath[snakeSpacer]).x
-            snakeNeck.y = (snakePath[snakeSpacer]).y
-          }else{
-          snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
-          snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
-          // snakeSection[i].body.checkCollision.up = true;
-          // snakeSection[i].body.checkCollision.down = true;
-        }
+      for (var i = 1; i <= numSnakeSections - 1; i++)
+      {
+        if (i == 1) {
+          snakeNeck.x = (snakePath[snakeSpacer]).x
+          snakeNeck.y = (snakePath[snakeSpacer]).y
+        }else{
+        snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
+        snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
+        // snakeSection[i].body.checkCollision.up = true;
+        // snakeSection[i].body.checkCollision.down = true;
       }
     }
 
