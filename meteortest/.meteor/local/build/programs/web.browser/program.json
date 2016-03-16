@@ -561,6 +561,7 @@
       "hash": "afbc8e5fadbb6d6e1be26414276512d92fadaaa1"
     },
     {
+<<<<<<< HEAD
       "path": "app/client/games/breakout.js",
       "where": "client",
       "type": "js",
@@ -572,6 +573,8 @@
       "hash": "2b11938ea28fc584799a47c2774ebbc02f402097"
     },
     {
+=======
+>>>>>>> dev
       "path": "app/example-meteor.js",
       "where": "client",
       "type": "js",

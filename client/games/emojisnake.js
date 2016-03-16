@@ -1,31 +1,40 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update,render : render });
-
-function preload() {
-
-    game.load.image('smiley','./assets/emojis/1.png');
-    game.load.image('new','./assets/emojis/4.png');
-    game.load.image('newer','./assets/emojis/6.png');
-
-}
-
 var snakeHead; //head of snake sprite
 var snakeSection = new Array(); //array of sprites that make the snake body sections
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
-var numSnakeSections = 15; //number of snake body sections
+var numSnakeSections = 5; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
 var w = 800;
 var h = 600;
+var game = new Phaser.Game(
+  w, h, Phaser.AUTO, 'phaser-example', {
+    preload: preload,
+    create: create,
+    update: update,
+    render : render });
+
+function preload() {
+
+    game.load.image('smiley','./assets/emojis/2.png');
+    game.load.image('smiley','./assets/emojis/1.png');
+    game.load.image('neck','./assets/emojis/4.png');
+    game.load.image('head','./assets/emojis/6.png');
+    game.load.image('food','./assets/emojis/43.png');
+
+}
+
 
 function create() {
 
-    game.stage.backgroundColor = "#FFF";
-    game.world.setBounds(0, 0, 800, 600);
+    game.stage.backgroundColor = "#EFF";
+    game.world.setBounds(0, 0, w, h);
 
     cursors = game.input.keyboard.createCursorKeys();
 
-    snakeHead = game.add.sprite(w/2, h/2, 'newer');
+    snakeHead = game.add.sprite(w/2, h/2, 'head');
     snakeHead.anchor.setTo(0.5, 0.5);
 
+    food = game.add.sprite(w/4, h/4, 'food');
+    food.anchor.setTo(0.5, 0.5);
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
@@ -36,7 +45,7 @@ function create() {
     // var y = 0.5;
     for (var i = 1; i <= numSnakeSections-1; i++)
       if (i == 1) {
-        snakeNeck = game.add.sprite(w/2, h/2, 'new');
+        snakeNeck = game.add.sprite(w/2, h/2, 'neck');
         snakeNeck.anchor.setTo(0.5, 0.5);
       }else{
 
@@ -54,6 +63,11 @@ function create() {
 
 }
 
+function addSmiley() {
+  var sprite = game.add.sprite(w/2, h/2, 'smiley');
+  return sprite;
+}
+
 function update() {
 
     snakeHead.body.velocity.setTo(0, 0);
@@ -61,7 +75,26 @@ function update() {
 
       if (checkOverlap())
       {
-        console.log('collision detected');
+
+        console.log('endGame');
+
+      }
+      if (checkIfEating())
+      {
+        console.log('eaten');
+        food.kill()
+
+        var smile = addSmiley()
+        snakeSection.push(smile)
+      }
+
+      function checkIfEating(){
+        snake = snakeHead.getBounds();
+        foody = food.getBounds();
+        if(food) {
+        return Phaser.Rectangle.intersects(snake, foody)
+      }
+
       }
 
       function checkOverlap() {
