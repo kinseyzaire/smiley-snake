@@ -1,41 +1,43 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update,render : render });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update,render : render });
 
 function preload() {
 
-    game.load.image('ball','./assets/games/breakout/emojis/1.png');
+    game.load.image('smiley','./assets/emojis/1.png');
 
 }
 
 var snakeHead; //head of snake sprite
 var snakeSection = new Array(); //array of sprites that make the snake body sections
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
-var numSnakeSections = 10; //number of snake body sections
-var snakeSpacer = 6; //parameter that sets the spacing between sections
+var numSnakeSections = 20; //number of snake body sections
+var snakeSpacer = 5; //parameter that sets the spacing between sections
+var w = 800;
+var h = 600;
 
 function create() {
 
     game.stage.backgroundColor = "#FFF";
-    game.physics.startSystem(Phaser.Physics.ARCADE);
     game.world.setBounds(0, 0, 800, 600);
 
     cursors = game.input.keyboard.createCursorKeys();
 
-    snakeHead = game.add.sprite(400, 300, 'ball');
+    snakeHead = game.add.sprite(w/2, h/2, 'smiley');
     snakeHead.anchor.setTo(0.5, 0.5);
 
+    game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
     //  Init snakeSection array
     for (var i = 1; i <= numSnakeSections-1; i++)
     {
-        snakeSection[i] = game.add.sprite(400, 300, 'ball');
+        snakeSection[i] = game.add.sprite(w/2, h/2, 'smiley');
         snakeSection[i].anchor.setTo(0.5, 0.5);
     }
 
     //  Init snakePath array
     for (var i = 0; i <= numSnakeSections * snakeSpacer; i++)
     {
-        snakePath[i] = new Phaser.Point(400, 300);
+        snakePath[i] = new Phaser.Point(w/2, h/2);
     }
 
 }
@@ -47,7 +49,7 @@ function update() {
 
     if (cursors.up.isDown)
     {
-        snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 300));
+        snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
         // Everytime the snake head moves, insert the new location at the start of the array,
         // and knock the last position off the end
@@ -67,11 +69,11 @@ function update() {
 
     if (cursors.left.isDown)
     {
-        snakeHead.body.angularVelocity = -300;
+        snakeHead.body.angularVelocity = -400;
     }
     else if (cursors.right.isDown)
     {
-        snakeHead.body.angularVelocity = 300;
+        snakeHead.body.angularVelocity = 400;
     }
 
     game.world.wrap(snakeHead, 0, true);
