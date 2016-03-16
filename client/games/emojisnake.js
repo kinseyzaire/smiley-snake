@@ -68,6 +68,11 @@ function update() {
     snakeHead.body.velocity.setTo(0, 0);
     snakeHead.body.angularVelocity = 0;
 
+    function generateFood() {
+      food = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), 'food');
+      food.anchor.setTo(0.5, 0.5);
+    }
+
       if (checkOverlap())
       {
         console.log('endGame');
@@ -76,7 +81,8 @@ function update() {
       if (checkIfEating())
       {
         console.log('eaten');
-        food.kill()
+        food.destroy()
+        generateFood()
 
       }
 
