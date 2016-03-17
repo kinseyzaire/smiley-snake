@@ -12,13 +12,66 @@ var game = new Phaser.Game(
     update: update,
     render : render });
 
+
+    function generateRandomSprite() {
+      var rando = Math.floor(Math.random() * 51)
+      console.log(rando);
+      return rando
+    }
+
+    function randoBad() {
+      var randomNumber = Math.floor(Math.random() * 3.99)
+      if (randomNumber <= 1) {
+        return 'poop'
+      }
+      else if (randomNumber <= 2) {
+        return 'bomb'
+      }
+      else {
+        return 'fire'
+      }
+    }
+    function randoGood() {
+      var randomNumber = Math.floor(Math.random() * 3.99)
+      if (randomNumber <= 1) {
+        return 'watermelon'
+      }
+      else if (randomNumber <= 2) {
+        return 'pineapple'
+      }
+      else {
+        return 'peach'
+      }
+    }
+
+
+
+
+
+
 function preload() {
 
 
     game.load.image('smiley','./assets/emojis/heads/702.png');
     game.load.image('neck','./assets/emojis/heads/711.png');
     game.load.image('head','./assets/emojis/heads/701.png');
-    game.load.image('food','./assets/emojis/foods/231.png');
+    game.load.image('food','./assets/emojis/heads/704.png');
+
+
+  // Bad Emojis
+  game.load.image('bomb','./assets/emojis/kills/521.png');
+  game.load.image('fire','./assets/emojis/kills/647.png');
+  game.load.image('poop','./assets/emojis/kills/527.png');
+
+  // Good Emojis
+  game.load.image('watermelon','./assets/emojis/foods/229.png');
+  game.load.image('pineapple','./assets/emojis/foods/233.png');
+  game.load.image('peach','./assets/emojis/foods/237.png');
+
+
+
+
+
 
 }
 
@@ -38,6 +91,10 @@ function create() {
     food = game.add.sprite(w/4, h/4, 'food');
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
+    bademoji = game.add.sprite(w/4, h/4, randoBad());
+    bademoji.destroy()
+    goodemoji = game.add.sprite(w/4, h/4, randoGood());
+    goodemoji.destroy()
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
@@ -82,7 +139,7 @@ function update() {
 
 
     function newSmiley() {
-      var smiley = game.add.sprite(w/2, h/2, 'smiley');
+      var smiley = game.add.sprite(w/2, h/2, 'food');
       smiley.scale.setTo(0.25,0.25)
       return smiley
     }
@@ -96,6 +153,16 @@ function update() {
       food.scale.setTo(0.25,0.25)
       food.anchor.setTo(0.5, 0.5);
     }
+    function generateBadEmoji() {
+      bademoji = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), randoBad());
+      bademoji.scale.setTo(0.25,0.25)
+      bademoji.anchor.setTo(0.5, 0.5);
+    }
+    function generateGoodEmoji() {
+      goodemoji = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), randoGood());
+      goodemoji.scale.setTo(0.25,0.25)
+      goodemoji.anchor.setTo(0.5, 0.5);
+    }
 
       if (checkOverlap())
       {
@@ -104,14 +171,30 @@ function update() {
       }
       if (checkIfEating())
       {
+        var randomInteger = Math.floor(Math.random() * 100)
         console.log('eaten');
+        console.log(randomInteger);
         numSnakeSections++
         snakePath.push(newPath())
         snakeSection.push(newSmiley())
         food.destroy()
+        bademoji.destroy()
+        goodemoji.destroy()
+        if (randomInteger % 5 == 0 ) {
+          generateBadEmoji()
+        }
+        if (randomInteger % 6 == 0 ) {
+          generateGoodEmoji()
+        }
         generateFood()
-
-
+      }
+      if (checkIfBadEmoji()) {
+        console.log("You Lose!");
+        bademoji.destroy()
+      }
+      if (checkIfGoodEmoji()) {
+        console.log("Add some points!");
+        goodemoji.destroy()
       }
 
       function checkIfEating(){
@@ -119,6 +202,20 @@ function update() {
         foody = food.getBounds();
         if(food) {
         return Phaser.Rectangle.intersects(snake, foody)
+      }
+      }
+      function checkIfBadEmoji(){
+        snake = snakeHead.getBounds();
+        bad = bademoji.getBounds();
+        if(food) {
+        return Phaser.Rectangle.intersects(snake, bad)
+      }
+      }
+      function checkIfGoodEmoji(){
+        snake = snakeHead.getBounds();
+        good = goodemoji.getBounds();
+        if(food) {
+        return Phaser.Rectangle.intersects(snake, good)
       }
       }
 
