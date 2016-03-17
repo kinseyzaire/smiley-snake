@@ -3,13 +3,15 @@ var snakeSection = new Array(); //array of sprites that make the snake body sect
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
-var w = 800;
-var h = 600;
 var blip;
 var poohit;
 var bonus;
+var bademoji;
+var goodemoji;
+var w = 1200;
+var h = 700;
 var game = new Phaser.Game(
-  w, h, Phaser.AUTO, 'phaser-example', {
+  w, h, Phaser.AUTO, '', {
     preload: preload,
     create: create,
     update: update,
@@ -47,37 +49,31 @@ var game = new Phaser.Game(
     }
 
 
-
-
-
-
 function preload() {
 
-
-    game.load.image('smiley','./assets/emojis/heads/702.png');
-    game.load.image('neck','./assets/emojis/heads/711.png');
-    game.load.image('head','./assets/emojis/heads/701.png');
-    game.load.image('food','./assets/emojis/heads/704.png');
-
+  // Snake Bits
+  game.load.image('smiley','public/assets/emojis/heads/702.png');
+  game.load.image('neck','public/assets/emojis/heads/711.png');
+  game.load.image('head','public/assets/emojis/heads/701.png');
+  game.load.image('food','public/assets/emojis/heads/704.png');
 
   // Bad Emojis
-  game.load.image('bomb','./assets/emojis/kills/521.png');
-  game.load.image('fire','./assets/emojis/kills/647.png');
-  game.load.image('poop','./assets/emojis/kills/527.png');
+  game.load.image('bomb','public/assets/emojis/kills/521.png');
+  game.load.image('fire','public/assets/emojis/kills/647.png');
+  game.load.image('poop','public/assets/emojis/kills/527.png');
 
   // Good Emojis
-  game.load.image('watermelon','./assets/emojis/foods/229.png');
-  game.load.image('pineapple','./assets/emojis/foods/233.png');
-  game.load.image('peach','./assets/emojis/foods/237.png');
+  game.load.image('watermelon','public/assets/emojis/foods/229.png');
+  game.load.image('pineapple','public/assets/emojis/foods/233.png');
+  game.load.image('peach','public/assets/emojis/foods/237.png');
 
   // load audio files
-  game.load.audio('blip', './assets/audiofiles/Blip.wav');
-  game.load.audio('poohit', './assets/audiofiles/poohit.wav');
-  game.load.audio('bonus', './assets/audiofiles/pickup.wav');
+  game.load.audio('blip', 'public/assets/audiofiles/Blip.wav');
+  game.load.audio('poohit', 'public/assets/audiofiles/poohit.wav');
+  game.load.audio('bonus', 'public/assets/audiofiles/pickup.wav');
 
 
 }
-
 
 function create() {
 
@@ -87,26 +83,15 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     game.paused = true;
 
-    snakeHead = game.add.sprite(w/2, h/2, 'head');
-    snakeHead.scale.setTo(0.25,0.25)
-    snakeHead.anchor.setTo(0.5, 0.5);
-
     food = game.add.sprite(w/4, h/4, 'food');
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
-    bademoji = game.add.sprite(100, 1000, randoBad());
-    bademoji.anchor.setTo(1.5, 1.5);
-    bademoji.destroy()
-    goodemoji = game.add.sprite(w+100, h+1000000, randoGood());
-    goodemoji.anchor.setTo(1.5, 1.5);
-    goodemoji.destroy()
 
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
     blip = game.add.audio('blip');
     poohit = game.add.audio('poohit');
     bonus = game.add.audio('bonus');
+
     //  Init snakeSection array
     // var x = 0.5;
     // var y = 0.5;
@@ -125,8 +110,17 @@ function create() {
     //  Init snakePath array
     for (var i = 0; i <= (numSnakeSections + 1000) * snakeSpacer; i++)
     {
-        snakePath[i] = new Phaser.Point(w/2, h/2);
+      snakePath[i] = new Phaser.Point(w/2, h/2);
     }
+
+
+    snakeHead = game.add.sprite(w/2, h/2, 'head');
+    snakeHead.scale.setTo(0.35,0.35)
+    snakeHead.anchor.setTo(0.5, 0.5);
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
+
 
     pauseButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     pauseButton.onDown.add(togglePause, this);
@@ -191,14 +185,17 @@ function update() {
       if (checkIfEating())
       {
         var randomInteger = Math.floor(Math.random() * 100)
-        console.log('eaten');
-        console.log(randomInteger);
-        numSnakeSections++
+        // console.log('eaten');
+        // console.log(randomInteger);
+        // numSnakeSections++
         snakePath.push(newPath())
         snakeSection.push(newSmiley())
-        food.destroy()
-        bademoji.destroy()
-        goodemoji.destroy()
+        if (food)
+          food.destroy()
+        if (bademoji)
+          bademoji.destroy()
+        if (goodemoji)
+          goodemoji.destroy()
         if (randomInteger % 5 == 0 ) {
           generateBadEmoji()
         }
@@ -226,13 +223,19 @@ function update() {
       }
       }
       function checkIfBadEmoji(){
-        snake = snakeHead.getBounds();
-        bad = bademoji.getBounds();
-        if(food) {
-        return Phaser.Rectangle.intersects(snake, bad)
-      }
+        if (!bademoji) {
+          return;
+        } else {
+          snake = snakeHead.getBounds();
+          bad = bademoji.getBounds();
+          if(food) {
+            return Phaser.Rectangle.intersects(snake, bad)
+          }
+        }
       }
       function checkIfGoodEmoji(){
+        if (!goodemoji)
+          return
         snake = snakeHead.getBounds();
         good = goodemoji.getBounds();
         if(food) {
