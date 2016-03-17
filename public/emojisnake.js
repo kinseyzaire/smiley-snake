@@ -15,7 +15,6 @@ var game = new Phaser.Game(
 
     function generateRandomSprite() {
       var rando = Math.floor(Math.random() * 51)
-      console.log(rando);
       return rando
     }
 
@@ -45,17 +44,13 @@ var game = new Phaser.Game(
     }
 
 
-
-
-
-
 function preload() {
 
-
-    game.load.image('smiley','assets/emojis/heads/702.png');
-    game.load.image('neck','assets/emojis/heads/711.png');
-    game.load.image('head','assets/emojis/heads/701.png');
-    game.load.image('food','assets/emojis/heads/704.png');
+  // Snake Bits
+  game.load.image('smiley','assets/emojis/heads/702.png');
+  game.load.image('neck','assets/emojis/heads/711.png');
+  game.load.image('head','assets/emojis/heads/701.png');
+  game.load.image('food','assets/emojis/heads/704.png');
 
 
   // Bad Emojis
@@ -84,10 +79,6 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     game.paused = true;
 
-    snakeHead = game.add.sprite(w/2, h/2, 'head');
-    snakeHead.scale.setTo(0.25,0.25)
-    snakeHead.anchor.setTo(0.5, 0.5);
-
     food = game.add.sprite(w/4, h/4, 'food');
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
@@ -95,10 +86,6 @@ function create() {
     bademoji.destroy()
     goodemoji = game.add.sprite(w/4, h/4, randoGood());
     goodemoji.destroy()
-
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
-
 
     //  Init snakeSection array
     // var x = 0.5;
@@ -118,8 +105,17 @@ function create() {
     //  Init snakePath array
     for (var i = 0; i <= (numSnakeSections + 1000) * snakeSpacer; i++)
     {
-        snakePath[i] = new Phaser.Point(w/2, h/2);
+      snakePath[i] = new Phaser.Point(w/2, h/2);
     }
+
+
+    snakeHead = game.add.sprite(w/2, h/2, 'head');
+    snakeHead.scale.setTo(0.35,0.35)
+    snakeHead.anchor.setTo(0.5, 0.5);
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
+
 
     pauseButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     pauseButton.onDown.add(togglePause, this);
