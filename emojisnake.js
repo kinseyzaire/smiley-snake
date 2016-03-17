@@ -86,15 +86,7 @@ function create() {
     food = game.add.sprite(w/4, h/4, 'food');
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
-    bademoji = game.add.sprite(100, 1000, randoBad());
-    bademoji.anchor.setTo(1.5, 1.5);
-    bademoji.destroy()
-    goodemoji = game.add.sprite(w+100, h+1000000, randoGood());
-    goodemoji.anchor.setTo(1.5, 1.5);
-    goodemoji.destroy()
 
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
     blip = game.add.audio('blip');
     poohit = game.add.audio('poohit');
