@@ -139,8 +139,13 @@ function update() {
 
 
     function newSmiley() {
+
       var smiley = game.add.sprite(w/2, h/2, 'food');
       smiley.scale.setTo(0.25,0.25)
+
+      // var smiley = game.add.sprite(w/2, h/2, 'smiley');
+      smiley.scale.setTo(0.25,0.25);
+      smiley.anchor.setTo(0.5, 0.5);
       return smiley
     }
     function newPath() {
@@ -232,6 +237,7 @@ function update() {
           return false
         }
 
+
       snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
       // Everytime the snake head moves, insert the new location at the start of the array,
@@ -250,13 +256,12 @@ function update() {
           snakeNeck.y = (snakePath[snakeSpacer]).y
         }else{
           var derp = snakeSpacer * i
-        snakeSection[i].x = (snakePath[snakeSpacer * i]).x;
-        snakeSection[i].y = (snakePath[snakeSpacer * i]).y;
-        // snakeSection[i].body.checkCollision.up = true;
-        // snakeSection[i].body.checkCollision.down = true;
+          snakeSection[i].x = (snakePath[snakeSpacer * i]).x;
+          snakeSection[i].y = (snakePath[snakeSpacer * i]).y;
       }
     }
-  
+
+
 
     if (cursors.left.isDown)
     {
