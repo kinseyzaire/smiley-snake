@@ -14,11 +14,12 @@ var game = new Phaser.Game(
 
 function preload() {
 
-    game.load.image('smiley','./assets/emojis/2.png');
-    game.load.image('smiley','./assets/emojis/1.png');
-    game.load.image('neck','./assets/emojis/4.png');
-    game.load.image('head','./assets/emojis/6.png');
-    game.load.image('food','./assets/emojis/43.png');
+
+    game.load.image('smiley','./assets/emojis/heads/702.png');
+
+    game.load.image('neck','./assets/emojis/heads/711.png');
+    game.load.image('head','./assets/emojis/heads/701.png');
+    game.load.image('food','./assets/emojis/foods/231.png');
 
 }
 
@@ -31,9 +32,11 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
 
     snakeHead = game.add.sprite(w/2, h/2, 'head');
+    snakeHead.scale.setTo(0.25,0.25)
     snakeHead.anchor.setTo(0.5, 0.5);
 
     food = game.add.sprite(w/4, h/4, 'food');
+    food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -47,14 +50,16 @@ function create() {
       if (i == 1) {
         snakeNeck = game.add.sprite(w/2, h/2, 'neck');
         snakeNeck.anchor.setTo(0.5, 0.5);
+        snakeNeck.scale.setTo(0.25,0.25)
       } else {
         snakeSection[i] = game.add.sprite(w/2, h/2, 'smiley');
         snakeSection[i].anchor.setTo(0.5, 0.5);
+        snakeSection[i].scale.setTo(0.25,0.25)
       }
     }
 
     //  Init snakePath array
-    for (var i = 0; i <= numSnakeSections * snakeSpacer; i++)
+    for (var i = 0; i <= (numSnakeSections + 1000) * snakeSpacer; i++)
     {
         snakePath[i] = new Phaser.Point(w/2, h/2);
     }
@@ -66,15 +71,29 @@ function create() {
 
 function togglePause(){
   game.paused = !game.paused
+
 }
+
 
 function update() {
 
     snakeHead.body.velocity.setTo(0, 0);
     snakeHead.body.angularVelocity = 0;
 
+
+    function newSmiley() {
+      var smiley = game.add.sprite(w/2, h/2, 'smiley');
+      smiley.scale.setTo(0.25,0.25)
+      return smiley
+    }
+    function newPath() {
+      var path= new Phaser.Point(w/2, h/2);
+      return path
+    }
+
     function generateFood() {
       food = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), 'food');
+      food.scale.setTo(0.25,0.25)
       food.anchor.setTo(0.5, 0.5);
     }
 
@@ -86,8 +105,12 @@ function update() {
       if (checkIfEating())
       {
         console.log('eaten');
+        numSnakeSections++
+        snakePath.push(newPath())
+        snakeSection.push(newSmiley())
         food.destroy()
         generateFood()
+
 
       }
 
@@ -112,6 +135,7 @@ function update() {
           return false
         }
 
+  if (cursors.up.isDown)  {
 
       snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
@@ -130,12 +154,14 @@ function update() {
           snakeNeck.x = (snakePath[snakeSpacer]).x
           snakeNeck.y = (snakePath[snakeSpacer]).y
         }else{
-        snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
-        snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
+          var derp = snakeSpacer * i
+        snakeSection[i].x = (snakePath[snakeSpacer * i]).x;
+        snakeSection[i].y = (snakePath[snakeSpacer * i]).y;
         // snakeSection[i].body.checkCollision.up = true;
         // snakeSection[i].body.checkCollision.down = true;
       }
     }
+  }
 
     if (cursors.left.isDown)
     {
