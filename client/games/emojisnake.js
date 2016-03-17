@@ -209,12 +209,12 @@ function update() {
       }
       if (checkIfBadEmoji()) {
         console.log("You Lose!");
-        bademoji.destroy()
+        bademoji.destroyChildren()
         poohit.play()
       }
       if (checkIfGoodEmoji()) {
         console.log("Add some points!");
-        goodemoji.destroy()
+        goodemoji.destroyChildren()
         bonus.play()
       }
 
