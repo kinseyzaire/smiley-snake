@@ -174,9 +174,12 @@ function update() {
         numSnakeSections++
         snakePath.push(newPath())
         snakeSection.push(newSmiley())
-        food.destroy()
-        bademoji.destroy()
-        goodemoji.destroy()
+        if (food)
+          food.destroy()
+        if (bademoji)
+          bademoji.destroy()
+        if (goodemoji)
+          goodemoji.destroy()
         if (randomInteger % 5 == 0 ) {
           generateBadEmoji()
         }
