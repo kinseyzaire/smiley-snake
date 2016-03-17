@@ -140,11 +140,6 @@ function update() {
     return smiley;
   }
 
-  function newPath() {
-    var path= new Phaser.Point(w/2, h/2);
-    return path;
-  }
-
   function generateFood() {
     food = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), 'food');
     food.scale.setTo(0.25,0.25);
@@ -168,6 +163,11 @@ function update() {
     if(location.x !== 380 && location.x !==320 && location.y !== 220 && location.y !== 280) {
       console.log('endGame');
     }
+  }
+
+  function newPath() {
+    var path= new Phaser.Point(w/2, h/2);
+    return path;
   }
 
   // CHECK IF EATING FUNC
