@@ -187,7 +187,7 @@ function update() {
         var randomInteger = Math.floor(Math.random() * 100)
         // console.log('eaten');
         // console.log(randomInteger);
-        // numSnakeSections++
+        numSnakeSections++
         snakePath.push(newPath())
         snakeSection.push(newSmiley())
         if (food)
@@ -206,12 +206,12 @@ function update() {
       }
       if (checkIfBadEmoji()) {
         console.log("You Lose!");
-        bademoji.destroyChildren()
+        bademoji.destroy()
         poohit.play()
       }
       if (checkIfGoodEmoji()) {
         console.log("Add some points!");
-        goodemoji.destroyChildren()
+        goodemoji.destroy()
         bonus.play()
       }
 
