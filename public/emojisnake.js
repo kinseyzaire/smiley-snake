@@ -3,6 +3,8 @@ var snakeSection = new Array(); //array of sprites that make the snake body sect
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
+var bademoji;
+var goodemoji;
 var w = 1200;
 var h = 700;
 var game = new Phaser.Game(
@@ -63,13 +65,7 @@ function preload() {
   game.load.image('pineapple','assets/emojis/foods/233.png');
   game.load.image('peach','assets/emojis/foods/237.png');
 
-
-
-
-
-
 }
-
 
 function create() {
 
@@ -82,10 +78,10 @@ function create() {
     food = game.add.sprite(w/4, h/4, 'food');
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
-    bademoji = game.add.sprite(w/4, h/4, randoBad());
-    bademoji.destroy()
-    goodemoji = game.add.sprite(w/4, h/4, randoGood());
-    goodemoji.destroy()
+    // bademoji = game.add.sprite(w/4, h/4, randoBad());
+    // bademoji.destroy()
+    // goodemoji = game.add.sprite(w/4, h/4, randoGood());
+    // goodemoji.destroy()
 
     //  Init snakeSection array
     // var x = 0.5;
@@ -206,13 +202,19 @@ function update() {
       }
       }
       function checkIfBadEmoji(){
-        snake = snakeHead.getBounds();
-        bad = bademoji.getBounds();
-        if(food) {
-        return Phaser.Rectangle.intersects(snake, bad)
-      }
+        if (!bademoji) {
+          return;
+        } else {
+          snake = snakeHead.getBounds();
+          bad = bademoji.getBounds();
+          if(food) {
+            return Phaser.Rectangle.intersects(snake, bad)
+          }
+        }
       }
       function checkIfGoodEmoji(){
+        if (!goodemoji)
+          return
         snake = snakeHead.getBounds();
         good = goodemoji.getBounds();
         if(food) {
