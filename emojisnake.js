@@ -14,8 +14,7 @@ var game = new Phaser.Game(
   w, h, Phaser.AUTO, '', {
     preload: preload,
     create: create,
-    update: update,
-    render : render });
+    update: update });
 
 
     function generateRandomSprite() {
@@ -87,14 +86,11 @@ function create() {
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
 
-
     blip = game.add.audio('blip');
     poohit = game.add.audio('poohit');
     bonus = game.add.audio('bonus');
 
     //  Init snakeSection array
-    // var x = 0.5;
-    // var y = 0.5;
     for (var i = 1; i <= numSnakeSections-1; i++) {
       if (i == 1) {
         snakeNeck = game.add.sprite(w/2, h/2, 'neck');
@@ -113,7 +109,6 @@ function create() {
       snakePath[i] = new Phaser.Point(w/2, h/2);
     }
 
-
     snakeHead = game.add.sprite(w/2, h/2, 'head');
     snakeHead.scale.setTo(0.35,0.35)
     snakeHead.anchor.setTo(0.5, 0.5);
@@ -121,14 +116,10 @@ function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
-
     pauseButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    pauseButton.onDown.add(togglePause, this);
-
-}
-
-function togglePause(){
-  game.paused = !game.paused
+    pauseButton.onDown.add(function(){
+      game.paused = !game.paused;
+    }, this);
 
 }
 
@@ -137,7 +128,6 @@ function update() {
 
     snakeHead.body.velocity.setTo(0, 0);
     snakeHead.body.angularVelocity = 0;
-
 
     function newSmiley() {
 
@@ -177,7 +167,7 @@ function update() {
         if(location.x !== 380 && location.x !==320 && location.y !== 220 && location.y !== 280)  {
 
         console.log('endGame');
-        console.log(snakeHead.getBounds());
+        //console.log(snakeHead.getBounds());
       }
 
 
@@ -185,9 +175,7 @@ function update() {
       if (checkIfEating())
       {
         var randomInteger = Math.floor(Math.random() * 100)
-        // console.log('eaten');
-        // console.log(randomInteger);
-        // numSnakeSections++
+        numSnakeSections++
         snakePath.push(newPath())
         snakeSection.push(newSmiley())
         if (food)
@@ -223,9 +211,9 @@ function update() {
       }
       }
       function checkIfBadEmoji(){
-        if (!bademoji) {
+        if ((!bademoji) || (!bademoji.getBounds())) {
           return;
-        } else {
+        } else if (bademoji) {
           snake = snakeHead.getBounds();
           bad = bademoji.getBounds();
           if(food) {
@@ -290,10 +278,5 @@ function update() {
     }
 
     game.world.wrap(snakeHead, 0, true);
-
-}
-function render() {
-
-    // game.debug.spriteInfo(snakeHead, 32, 32);
 
 }
