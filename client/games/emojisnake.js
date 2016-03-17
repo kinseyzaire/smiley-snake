@@ -5,6 +5,7 @@ var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
 var w = 1500;
 var h = 900;
+var blip;
 var game = new Phaser.Game(
   w, h, Phaser.AUTO, 'phaser-example', {
     preload: preload,
@@ -20,6 +21,7 @@ function preload() {
     game.load.image('head','./assets/emojis/heads/701.png');
     game.load.image('food','./assets/emojis/foods/231.png');
 
+    game.load.audio('blip', './assets/audiofiles/Blip.wav');
 }
 
 
@@ -42,6 +44,9 @@ function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
+    blip = game.add.audio('blip');
+
+    // game.sound.setDecodedCallback([ blip ], start, this);
 
     //  Init snakeSection array
     // var x = 0.5;
@@ -109,6 +114,7 @@ function update() {
         numSnakeSections++
         snakePath.push(newPath())
         snakeSection.push(newSmiley())
+        blip.play();
         food.destroy()
         generateFood()
 
