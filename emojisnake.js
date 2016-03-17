@@ -49,21 +49,21 @@ var game = new Phaser.Game(
 function preload() {
 
   // Snake Bits
-  game.load.image('smiley','assets/emojis/heads/702.png');
-  game.load.image('neck','assets/emojis/heads/711.png');
-  game.load.image('head','assets/emojis/heads/701.png');
-  game.load.image('food','assets/emojis/heads/704.png');
+  game.load.image('smiley','public/assets/emojis/heads/702.png');
+  game.load.image('neck','public/assets/emojis/heads/711.png');
+  game.load.image('head','public/assets/emojis/heads/701.png');
+  game.load.image('food','public/assets/emojis/heads/704.png');
 
 
   // Bad Emojis
-  game.load.image('bomb','assets/emojis/kills/521.png');
-  game.load.image('fire','assets/emojis/kills/647.png');
-  game.load.image('poop','assets/emojis/kills/527.png');
+  game.load.image('bomb','public/assets/emojis/kills/521.png');
+  game.load.image('fire','public/assets/emojis/kills/647.png');
+  game.load.image('poop','public/assets/emojis/kills/527.png');
 
   // Good Emojis
-  game.load.image('watermelon','assets/emojis/foods/229.png');
-  game.load.image('pineapple','assets/emojis/foods/233.png');
-  game.load.image('peach','assets/emojis/foods/237.png');
+  game.load.image('watermelon','public/assets/emojis/foods/229.png');
+  game.load.image('pineapple','public/assets/emojis/foods/233.png');
+  game.load.image('peach','public/assets/emojis/foods/237.png');
 
 }
 
@@ -163,15 +163,15 @@ function update() {
 
       if (checkOverlap())
       {
-        console.log('endGame');
+        // console.log('endGame');
 
       }
       if (checkIfEating())
       {
         var randomInteger = Math.floor(Math.random() * 100)
-        console.log('eaten');
-        console.log(randomInteger);
-        numSnakeSections++
+        // console.log('eaten');
+        // console.log(randomInteger);
+        // numSnakeSections++
         snakePath.push(newPath())
         snakeSection.push(newSmiley())
         if (food)
