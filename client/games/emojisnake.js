@@ -3,8 +3,8 @@ var snakeSection = new Array(); //array of sprites that make the snake body sect
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
-var w = 1500;
-var h = 900;
+var w = 800;
+var h = 600;
 var blip;
 var game = new Phaser.Game(
   w, h, Phaser.AUTO, 'phaser-example', {
@@ -12,6 +12,38 @@ var game = new Phaser.Game(
     create: create,
     update: update,
     render : render });
+
+
+    function generateRandomSprite() {
+      var rando = Math.floor(Math.random() * 51)
+      return rando
+    }
+
+    function randoBad() {
+      var randomNumber = Math.floor(Math.random() * 3.99)
+      if (randomNumber <= 1) {
+        return 'poop'
+      }
+      else if (randomNumber <= 2) {
+        return 'bomb'
+      }
+      else {
+        return 'fire'
+      }
+    }
+    function randoGood() {
+      var randomNumber = Math.floor(Math.random() * 3.99)
+      if (randomNumber <= 1) {
+        return 'watermelon'
+      }
+      else if (randomNumber <= 2) {
+        return 'pineapple'
+      }
+      else {
+        return 'peach'
+      }
+    }
+
 
 function preload() {
 
@@ -40,13 +72,17 @@ function create() {
     food = game.add.sprite(w/4, h/4, 'food');
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
+    bademoji = game.add.sprite(100, 1000, randoBad());
+    bademoji.anchor.setTo(1.5, 1.5);
+    bademoji.destroy()
+    goodemoji = game.add.sprite(w+100, h+1000000, randoGood());
+    goodemoji.anchor.setTo(1.5, 1.5);
+    goodemoji.destroy()
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
     blip = game.add.audio('blip');
-
-    // game.sound.setDecodedCallback([ blip ], start, this);
 
     //  Init snakeSection array
     // var x = 0.5;
@@ -105,7 +141,13 @@ function update() {
 
       if (checkOverlap())
       {
+        var location = snakeHead.getBounds()
+        if(location.x !== 380 && location.x !==320 && location.y !== 220 && location.y !== 280)  {
+
         console.log('endGame');
+        console.log(snakeHead.getBounds());
+      }
+
 
       }
       if (checkIfEating())
@@ -165,8 +207,6 @@ function update() {
           snakeSection[i].y = (snakePath[snakeSpacer * i]).y;
       }
     }
-
-
 
     if (cursors.left.isDown)
     {
