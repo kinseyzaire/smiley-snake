@@ -14,10 +14,10 @@ var game = new Phaser.Game(
 
 function preload() {
 
-    game.load.image('smiley','./assets/emojis/2.png');
-    game.load.image('smiley','./assets/emojis/1.png');
+
+    game.load.image('smiley','./assets/emojis/28.png');
     game.load.image('neck','./assets/emojis/4.png');
-    game.load.image('head','./assets/emojis/6.png');
+    game.load.image('head','./assets/emojis/7.png');
     game.load.image('food','./assets/emojis/43.png');
 
 }
@@ -56,17 +56,27 @@ function create() {
   }
 
     //  Init snakePath array
-    for (var i = 0; i <= numSnakeSections * snakeSpacer; i++)
+    for (var i = 0; i <= (numSnakeSections + 1000) * snakeSpacer; i++)
     {
         snakePath[i] = new Phaser.Point(w/2, h/2);
     }
-
 }
+
 
 function update() {
 
     snakeHead.body.velocity.setTo(0, 0);
     snakeHead.body.angularVelocity = 0;
+
+
+    function newSmiley() {
+      var smile = game.add.sprite(w/2, h/2, 'smiley');
+      return smile
+    }
+    function newPath() {
+      var path= new Phaser.Point(w/2, h/2);
+      return path
+    }
 
     function generateFood() {
       food = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), 'food');
@@ -81,8 +91,12 @@ function update() {
       if (checkIfEating())
       {
         console.log('eaten');
+        numSnakeSections++
+        snakePath.push(newPath())
+        snakeSection.push(newSmiley())
         food.destroy()
         generateFood()
+
 
       }
 
@@ -107,6 +121,7 @@ function update() {
           return false
         }
 
+  if (cursors.up.isDown)  {
 
       snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
@@ -125,12 +140,14 @@ function update() {
           snakeNeck.x = (snakePath[snakeSpacer]).x
           snakeNeck.y = (snakePath[snakeSpacer]).y
         }else{
-        snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
-        snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
+          var derp = snakeSpacer * i
+        snakeSection[i].x = (snakePath[snakeSpacer * i]).x;
+        snakeSection[i].y = (snakePath[snakeSpacer * i]).y;
         // snakeSection[i].body.checkCollision.up = true;
         // snakeSection[i].body.checkCollision.down = true;
       }
     }
+  }
 
     if (cursors.left.isDown)
     {
