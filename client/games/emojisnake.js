@@ -89,9 +89,11 @@ function create() {
     food = game.add.sprite(w/4, h/4, 'food');
     food.scale.setTo(0.25,0.25)
     food.anchor.setTo(0.5, 0.5);
-    bademoji = game.add.sprite(w/4, h/4, randoBad());
+    bademoji = game.add.sprite(100, 1000, randoBad());
+    bademoji.anchor.setTo(1.5, 1.5);
     bademoji.destroy()
-    goodemoji = game.add.sprite(w/4, h/4, randoGood());
+    goodemoji = game.add.sprite(w+100, h+1000000, randoGood());
+    goodemoji.anchor.setTo(1.5, 1.5);
     goodemoji.destroy()
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -166,7 +168,7 @@ function update() {
       {
         var location = snakeHead.getBounds()
         if(location.x !== 380 && location.x !==320 && location.y !== 220 && location.y !== 280)  {
-          
+
         console.log('endGame');
       }
 
@@ -235,7 +237,6 @@ function update() {
           return false
         }
 
-  if (cursors.up.isDown)  {
 
       snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
@@ -261,7 +262,6 @@ function update() {
         // snakeSection[i].body.checkCollision.down = true;
       }
     }
-  }
 
     if (cursors.left.isDown)
     {
