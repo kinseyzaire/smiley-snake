@@ -1,7 +1,7 @@
 var snakeHead; //head of snake sprite
 var snakeSection = new Array(); //array of sprites that make the snake body sections
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
-var numSnakeSections = 5; //number of snake body sections
+var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
 var w = 800;
 var h = 600;
@@ -43,15 +43,17 @@ function create() {
     //  Init snakeSection array
     // var x = 0.5;
     // var y = 0.5;
-    for (var i = 1; i <= numSnakeSections-1; i++) {
+    for (var i = 1; i <= numSnakeSections-1; i++)
       if (i == 1) {
         snakeNeck = game.add.sprite(w/2, h/2, 'neck');
         snakeNeck.anchor.setTo(0.5, 0.5);
-      } else {
+      }else{
+
+    {
         snakeSection[i] = game.add.sprite(w/2, h/2, 'smiley');
         snakeSection[i].anchor.setTo(0.5, 0.5);
-      }
     }
+  }
 
     //  Init snakePath array
     for (var i = 0; i <= numSnakeSections * snakeSpacer; i++)
@@ -59,24 +61,21 @@ function create() {
         snakePath[i] = new Phaser.Point(w/2, h/2);
     }
 
-    pauseButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    pauseButton.onDown.add(togglePause, this);
-
-}
-
-function togglePause(){
-  game.paused = !game.paused
-}
-
-function addSmiley() {
-  var sprite = game.add.sprite(w/2, h/2, 'smiley');
-  return sprite;
 }
 
 function update() {
 
     snakeHead.body.velocity.setTo(0, 0);
     snakeHead.body.angularVelocity = 0;
+
+    function newSmiley() {
+      var smile = game.add.sprite(w/2, h/2, 'smiley');
+      return smile
+    }
+    function newPath() {
+      var path= new Phaser.Point(w/2, h/2);
+      return path
+    }
 
     function generateFood() {
       food = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), 'food');
@@ -85,18 +84,20 @@ function update() {
 
       if (checkOverlap())
       {
-
         console.log('endGame');
 
       }
       if (checkIfEating())
       {
         console.log('eaten');
+        numSnakeSections++
+        snakePath.push(newPath())
+        snakeSection.push(newSmiley())
+        console.log(snakePath, snakeSection, numSnakeSections);
         food.destroy()
         generateFood()
 
-        var smile = addSmiley()
-        snakeSection.push(smile)
+
       }
 
       function checkIfEating(){
@@ -105,7 +106,6 @@ function update() {
         if(food) {
         return Phaser.Rectangle.intersects(snake, foody)
       }
-
       }
 
       function checkOverlap() {
@@ -121,13 +121,16 @@ function update() {
           return false
         }
 
+  if (cursors.up.isDown)  {
 
       snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
       // Everytime the snake head moves, insert the new location at the start of the array,
       // and knock the last position off the end
 
+      snakePath.splice()
       var part = snakePath.pop();
+      console.log(part);
 
       part.setTo(snakeHead.x, snakeHead.y);
 
@@ -139,12 +142,14 @@ function update() {
           snakeNeck.x = (snakePath[snakeSpacer]).x
           snakeNeck.y = (snakePath[snakeSpacer]).y
         }else{
-        snakeSection[i].x = (snakePath[i * snakeSpacer]).x;
-        snakeSection[i].y = (snakePath[i * snakeSpacer]).y;
-        // snakeSection[i].body.checkCollision.up = true;
-        // snakeSection[i].body.checkCollision.down = true;
+          var derp = snakeSpacer * i
+          snakeSection[i].x = (snakePath[derp]).x;
+          snakeSection[i].y = (snakePath[derp]).y;
+          // snakeSection[i].body.checkCollision.up = true;
+          // snakeSection[i].body.checkCollision.down = true;
       }
     }
+  }
 
     if (cursors.left.isDown)
     {
