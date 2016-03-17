@@ -3,10 +3,10 @@ var snakeSection = new Array(); //array of sprites that make the snake body sect
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
-var w = 1500;
-var h = 900;
+var w = 1200;
+var h = 700;
 var game = new Phaser.Game(
-  w, h, Phaser.AUTO, 'phaser-example', {
+  w, h, Phaser.AUTO, '', {
     preload: preload,
     create: create,
     update: update,
@@ -52,21 +52,21 @@ var game = new Phaser.Game(
 function preload() {
 
 
-    game.load.image('smiley','./assets/emojis/heads/702.png');
-    game.load.image('neck','./assets/emojis/heads/711.png');
-    game.load.image('head','./assets/emojis/heads/701.png');
-    game.load.image('food','./assets/emojis/heads/704.png');
+    game.load.image('smiley','assets/emojis/heads/702.png');
+    game.load.image('neck','assets/emojis/heads/711.png');
+    game.load.image('head','assets/emojis/heads/701.png');
+    game.load.image('food','assets/emojis/heads/704.png');
 
 
   // Bad Emojis
-  game.load.image('bomb','./assets/emojis/kills/521.png');
-  game.load.image('fire','./assets/emojis/kills/647.png');
-  game.load.image('poop','./assets/emojis/kills/527.png');
+  game.load.image('bomb','assets/emojis/kills/521.png');
+  game.load.image('fire','assets/emojis/kills/647.png');
+  game.load.image('poop','assets/emojis/kills/527.png');
 
   // Good Emojis
-  game.load.image('watermelon','./assets/emojis/foods/229.png');
-  game.load.image('pineapple','./assets/emojis/foods/233.png');
-  game.load.image('peach','./assets/emojis/foods/237.png');
+  game.load.image('watermelon','assets/emojis/foods/229.png');
+  game.load.image('pineapple','assets/emojis/foods/233.png');
+  game.load.image('peach','assets/emojis/foods/237.png');
 
 
 
