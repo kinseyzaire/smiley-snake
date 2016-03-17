@@ -54,7 +54,7 @@ function randoGood() {
   }
 }
 
-// PHASER PRELOAD FUNCTION
+// PHASER PRELOAD FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function preload() {
   // LOAD Snake Bits Emojis
   game.load.image('smiley','public/assets/emojis/heads/702.png');
@@ -77,9 +77,9 @@ function preload() {
   game.load.audio('poohit', 'public/assets/audiofiles/poohit.wav');
   game.load.audio('bonus', 'public/assets/audiofiles/pickup.wav');
 }
-// END PHASE PRELOAD FUNCTION
+// END PHASE PRELOAD FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// PHASER CREATE FUNCTION
+// PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function create() {
   game.stage.backgroundColor = "#FFF";
   game.world.setBounds(0, 0, w, h);
@@ -130,9 +130,9 @@ function create() {
     }, this
   );
 }
-// END PHASER CREATE FUNCTION
+// END PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// PHASER UPDATE FUNCTION
+// PHASER UPDATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function update() {
   snakeHead.body.velocity.setTo(0, 0);
   snakeHead.body.angularVelocity = 0;
@@ -292,4 +292,4 @@ function update() {
   //WORLD WRAP
   game.world.wrap(snakeHead, 0, true);
 }
-// END PHASER UPDATE FUNCTION
+// END PHASER UPDATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
