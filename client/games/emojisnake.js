@@ -3,8 +3,8 @@ var snakeSection = new Array(); //array of sprites that make the snake body sect
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
-var w = 800;
-var h = 600;
+var w = 1500;
+var h = 900;
 var game = new Phaser.Game(
   w, h, Phaser.AUTO, 'phaser-example', {
     preload: preload,
@@ -16,7 +16,6 @@ function preload() {
 
 
     game.load.image('smiley','./assets/emojis/heads/702.png');
-
     game.load.image('neck','./assets/emojis/heads/711.png');
     game.load.image('head','./assets/emojis/heads/701.png');
     game.load.image('food','./assets/emojis/foods/231.png');
@@ -26,10 +25,11 @@ function preload() {
 
 function create() {
 
-    game.stage.backgroundColor = "#EFF";
+    game.stage.backgroundColor = "#FFF";
     game.world.setBounds(0, 0, w, h);
 
     cursors = game.input.keyboard.createCursorKeys();
+    game.paused = true;
 
     snakeHead = game.add.sprite(w/2, h/2, 'head');
     snakeHead.scale.setTo(0.25,0.25)
@@ -135,8 +135,6 @@ function update() {
           return false
         }
 
-  if (cursors.up.isDown)  {
-
       snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
 
       // Everytime the snake head moves, insert the new location at the start of the array,
@@ -161,7 +159,7 @@ function update() {
         // snakeSection[i].body.checkCollision.down = true;
       }
     }
-  }
+  
 
     if (cursors.left.isDown)
     {
