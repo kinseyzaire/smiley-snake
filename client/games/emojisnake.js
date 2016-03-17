@@ -15,7 +15,6 @@ var game = new Phaser.Game(
 
     function generateRandomSprite() {
       var rando = Math.floor(Math.random() * 51)
-      console.log(rando);
       return rando
     }
 
@@ -165,7 +164,12 @@ function update() {
 
       if (checkOverlap())
       {
+        var location = snakeHead.getBounds()
+        if(location.x !== 380 && location.x !==320 && location.y !== 220 && location.y !== 280)  {
+          
         console.log('endGame');
+      }
+
 
       }
       if (checkIfEating())
