@@ -20,12 +20,6 @@ var game = new Phaser.Game (
     update: update
 });
 
-// MAKES RANDOM NUMBER 1 to 51 used w emoji heads?
-function generateRandomSprite() {
-  var rando = Math.floor(Math.random() * 51)
-  return rando
-}
-
 // RETURNS RANDOM KILL
 function randoBad() {
   var randomNumber = Math.floor(Math.random() * 3.99)
