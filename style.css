@@ -75,7 +75,7 @@ a:hover {
   opacity: 0;
 }
 
-.menuthing h1:hover {
+.menuthing:hover h1 {
   opacity: 1;
 }
 
