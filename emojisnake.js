@@ -122,6 +122,9 @@ function preload() {
   game.load.image('pineapple','public/assets/emojis/foods/233.png');
   game.load.image('peach','public/assets/emojis/foods/237.png');
 
+  // LOAD Smiley Snake Logo
+  game.load.image('logo','public/assets/smileysnakelogo.svg');
+
   // load audio files
   game.load.audio('blip', 'public/assets/audiofiles/Blip.wav');
   game.load.audio('poohit', 'public/assets/audiofiles/poohit.wav');
@@ -159,7 +162,7 @@ function create() {
   bonus = game.add.audio('bonus');
 
   // SCORE LABEL //
-  scoreText = game.add.text(w/2, 50, 'score: ' + score, {
+  scoreText = game.add.text(0, 25, 'score: ' + score, {
     font: "20px Arial",
     fill: "#000",
     align: "center" });
@@ -184,7 +187,7 @@ function create() {
 
   // ADDING BIG SNAKE HEAD LAST, SO IT IS ON TOP
   snakeHead = game.add.sprite(w/2, h/2, 'head');
-  snakeHead.scale.setTo(0.35,0.35)
+  snakeHead.scale.setTo(0.35,0.35);
   snakeHead.anchor.setTo(0.5, 0.5);
 
   //STARTING GAME PHYSICS
@@ -199,10 +202,10 @@ function create() {
 
 function myPause(){
   if ( !game.paused ) {
-    pause_label = game.add.text(w/2 - 100, h/2, pauseString, { 
-      font: '30px Arial', 
-      fill: 'whitesmoke',
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    pause_label = game.add.text(w/3, h/3, pauseString, {
+      font: '30px Arial',
+      fill: 'black',
+      backgroundColor: 'rgba(255, 255, 255, 0.7)',
       align: 'center'
     });
   } else if ( game.paused ) {
