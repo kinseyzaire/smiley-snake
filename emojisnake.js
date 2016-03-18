@@ -138,7 +138,6 @@ function create() {
   game.world.setBounds(0, 0, w, h);
 
   cursors = game.input.keyboard.createCursorKeys();
-  game.paused = true;
 
   // GROUPS //
   goodies = game.add.group();
@@ -268,17 +267,19 @@ function update() {
 // BEGIN HELPER FUNCTIONS -------------------
 function snakeEatsGoodies(snake, goodie) {
   bonus.play();
-  // console.log('ggoooooodo');
   goodies.remove(goodie, true);
   score += 1000;
   scoreText.text = 'score: ' + score;
 }
 function snakeEatsBaddies(snake, baddie) {
+  game.paused = true;
   poohit.play();
-  game.gameOver();
+  if (confirm('YOU DID SO GOOD!'))
+    location.reload();
+  else
+    window.location = '/index.html';
 }
 function snakeEatsSmilies(snake, smiley) {
-  console.log(':) :) :) :)');
   smilies.remove(smiley, true);
   score += 10000;
   scoreText.text = 'score: ' + score;
@@ -297,7 +298,6 @@ function newSmiley() {
 }
 
 function generateSmiley() {
-  console.log('gnratig smily');
   smiley = smilies.create(rand(w-50), rand(h-50), '10');
   smiley.scale.setTo(0.25, 0.25);
   smiley.anchor.setTo(0.5, 0.5);
