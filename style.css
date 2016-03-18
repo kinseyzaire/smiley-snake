@@ -53,13 +53,13 @@ canvas {
 }
 
 h1,h2,h3,h4,h5,h6,a, a:hover, a:active, a:visited {
-  color: black;
+  color: grey;
   font-family: sans-serif;
   text-decoration: none;
 }
 
 a:hover {
-  color: grey;
+  opacity: .5;
 }
 
 .menuemoji {
@@ -71,7 +71,16 @@ a:hover {
   padding: 5%;
 }
 
+.menuthing h1 {
+  opacity: 0;
+}
+
+.menuthing h1:hover {
+  opacity: 1;
+}
+
 .container {
-  margin: 15%;
-  margin-left: 25%;
+  width: 50%;
+  margin: 15% auto;
+  text-align: center;
 }
