@@ -13,6 +13,8 @@ var bonus; //sounds
 
 var score = 0;
 var scoreText;
+var pause_label;
+var pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
 
 var w = 1200;
 var h = 700;
@@ -191,13 +193,24 @@ function create() {
 
   //PAUSE BUTTON SPACE BAR
   pauseButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  pauseButton.onDown.add(
-    function(){
-      game.paused = !game.paused;
-    }, this
-  );
+  pauseButton.onDown.add( myPause, this );
 }
 // END PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function myPause(){
+  if ( !game.paused ) {
+    pause_label = game.add.text(w/2 - 100, h/2, pauseString, { 
+      font: '30px Arial', 
+      fill: 'whitesmoke',
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      align: 'center'
+    });
+  } else if ( game.paused ) {
+    if (pause_label)
+      pause_label.destroy();
+  }
+  game.paused = !game.paused;
+}
 
 // PHASER UPDATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function update() {
@@ -267,6 +280,7 @@ function snakeEatsSmilies(snake, smiley) {
   smilies.remove(smiley, true);
   score += 10000;
   scoreText.text = 'score: ' + score;
+  pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
   numSnakeSections++;
   snakePath.push(newPath());
   snakeSection.push(newSmiley());
