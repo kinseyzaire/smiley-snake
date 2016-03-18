@@ -1,0 +1,9 @@
+{
+  "firebase": "smiley-snake",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
