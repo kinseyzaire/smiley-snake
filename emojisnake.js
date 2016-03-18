@@ -3,13 +3,6 @@ var snakeSection = new Array(); //array of sprites that make the snake body sect
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var numSnakeSections = 15; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
-<<<<<<< HEAD
-var blip;
-var poohit;
-var bonus;
-var bademoji;
-var goodemoji;
-=======
 var food;
 var bademoji;
 var goodemoji;
@@ -21,55 +14,13 @@ var bonus; //sounds
 var score = 0;
 var scoreText;
 
->>>>>>> dev
 var w = 1200;
 var h = 700;
-var game = new Phaser.Game(
+
+var game = new Phaser.Game (
   w, h, Phaser.AUTO, '', {
     preload: preload,
     create: create,
-<<<<<<< HEAD
-    update: update,
-    render : render });
-
-
-    function generateRandomSprite() {
-      var rando = Math.floor(Math.random() * 51)
-      return rando
-    }
-
-    function randoBad() {
-      var randomNumber = Math.floor(Math.random() * 3.99)
-      if (randomNumber <= 1) {
-        return 'poop'
-      }
-      else if (randomNumber <= 2) {
-        return 'bomb'
-      }
-      else {
-        return 'fire'
-      }
-    }
-    function randoGood() {
-      var randomNumber = Math.floor(Math.random() * 3.99)
-      if (randomNumber <= 1) {
-        return 'watermelon'
-      }
-      else if (randomNumber <= 2) {
-        return 'pineapple'
-      }
-      else {
-        return 'peach'
-      }
-    }
-
-
-function preload() {
-
-  // Snake Bits
-  game.load.image('smiley','public/assets/emojis/heads/702.png');
-  game.load.image('neck','public/assets/emojis/heads/711.png');
-=======
     update: update
 });
 
@@ -105,7 +56,6 @@ function randoSmiley() {
 // PHASER PRELOAD FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function preload() {
   // LOAD Snake Bits Emojis
->>>>>>> dev
   game.load.image('head','public/assets/emojis/heads/701.png');
   game.load.image('1','public/assets/emojis/heads/701.png');
   game.load.image('2','public/assets/emojis/heads/702.png');
@@ -160,12 +110,12 @@ function preload() {
   game.load.image('51','public/assets/emojis/heads/751.png');
   game.load.image('52','public/assets/emojis/heads/752.png');
 
-  // Bad Emojis
+  // LOAD Bad Emojis
   game.load.image('bomb','public/assets/emojis/kills/521.png');
   game.load.image('fire','public/assets/emojis/kills/647.png');
   game.load.image('poop','public/assets/emojis/kills/527.png');
 
-  // Good Emojis
+  // LOAD Good Emojis
   game.load.image('watermelon','public/assets/emojis/foods/229.png');
   game.load.image('pineapple','public/assets/emojis/foods/233.png');
   game.load.image('peach','public/assets/emojis/foods/237.png');
@@ -174,10 +124,10 @@ function preload() {
   game.load.audio('blip', 'public/assets/audiofiles/Blip.wav');
   game.load.audio('poohit', 'public/assets/audiofiles/poohit.wav');
   game.load.audio('bonus', 'public/assets/audiofiles/pickup.wav');
-
-
 }
+// END PHASE PRELOAD FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function create() {
   game.stage.backgroundColor = "#EFF";
   game.world.setBounds(0, 0, w, h);
@@ -247,8 +197,9 @@ function create() {
     }, this
   );
 }
+// END PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+// PHASER UPDATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function update() {
   snakeHead.body.velocity.setTo(0, 0);
   snakeHead.body.angularVelocity = 0;
@@ -284,18 +235,14 @@ function update() {
       snakeSection[i].x = (snakePath[snakeSpacer * i]).x;
       snakeSection[i].y = (snakePath[snakeSpacer * i]).y;
     }
-    else if (cursors.right.isDown)
-    {
-        snakeHead.body.angularVelocity = 400;
-    }
+  }
 
-    game.world.wrap(snakeHead, 0, true);
-
-}
-function render() {
-
-    // game.debug.spriteInfo(snakeHead, 32, 32);
-
+  // ALLOWS USERS TO STEER WITH ARROW KEYS
+  if (cursors.left.isDown) {
+    snakeHead.body.angularVelocity = -400;
+  } else if (cursors.right.isDown) {
+    snakeHead.body.angularVelocity = 400;
+  }
 
   //WRORLD WRAP
   game.world.wrap(snakeHead, 0, true);
