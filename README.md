@@ -3,6 +3,18 @@
 
 This is a game of snake that uses unicode emoji characters for graphics.
 
+It's really the most fun you could ever have.
+
+## installation
+
+There's really no installation required.
+
+1. clone this repo
+
+2. run an http server. try `python -m SimpleHTTPServer`
+
+## links
+
 * [github](https://github.com/kinseyzaire/smiley-snake)
 
 * [issues](https://waffle.io/kinseyzaire/smiley-snake)
