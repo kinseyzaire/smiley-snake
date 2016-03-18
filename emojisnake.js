@@ -275,8 +275,7 @@ function snakeEatsGoodies(snake, goodie) {
 }
 function snakeEatsBaddies(snake, baddie) {
   poohit.play();
-  // console.log('Baaaaaad');
-  gameOver();
+  game.gameOver();
 }
 function snakeEatsSmilies(snake, smiley) {
   console.log(':) :) :) :)');
@@ -298,19 +297,20 @@ function newSmiley() {
 }
 
 function generateSmiley() {
-  smiley = smilies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h, randoSmiley()));
-  smiley.scale.setTo(0.25,0.25);
+  console.log('gnratig smily');
+  smiley = smilies.create(rand(w-50), rand(h-50), '10');
+  smiley.scale.setTo(0.25, 0.25);
   smiley.anchor.setTo(0.5, 0.5);
 }
 
 function generateBaddie() {
-  baddie = baddies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h), randoBad());
+  baddie = baddies.create(rand(w), rand(h), randoBad());
   baddie.scale.setTo(0.25,0.25);
   baddie.anchor.setTo(0.5, 0.5);
 }
 
 function generateGoodie() {
-  goodie = goodies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h), randoGood());
+  goodie = goodies.create(rand(w), rand(h), randoGood());
   goodie.scale.setTo(0.25,0.25);
   goodie.anchor.setTo(0.5, 0.5);
 }
@@ -318,5 +318,9 @@ function generateGoodie() {
 function newPath() {
   var path= new Phaser.Point(w/2, h/2);
   return path;
+}
+
+function rand(i) {
+  return Math.floor(Math.random() * i);
 }
 // -- END HELPER FUNCTIONS ---------------
