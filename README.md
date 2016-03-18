@@ -13,6 +13,12 @@ There's really no installation required.
 
 2. run an http server. try `python -m SimpleHTTPServer`
 
+## resources
+
+* game framework: [phaser.io](http://phaser.io/)
+
+* sfx: by [MikeWickwar](https://github.com/MikeWickwar), with [bfxr](http://www.bfxr.net/)
+
 ## links
 
 * [github](https://github.com/kinseyzaire/smiley-snake)
