@@ -10,6 +10,9 @@ var blip; //sounds
 var poohit; //sounds
 var bonus; //sounds
 
+var score = 0;
+var scoreText;
+
 var w = 1200;
 var h = 700;
 
@@ -54,7 +57,7 @@ function preload() {
   game.load.image('smiley','public/assets/emojis/heads/702.png');
   game.load.image('neck','public/assets/emojis/heads/711.png');
   game.load.image('head','public/assets/emojis/heads/701.png');
-  game.load.image('food','public/assets/emojis/heads/704.png');
+  game.load.image('smiley','public/assets/emojis/heads/704.png');
 
   // LOAD Bad Emojis
   game.load.image('bomb','public/assets/emojis/kills/521.png');
@@ -75,19 +78,38 @@ function preload() {
 
 // PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function create() {
-  game.stage.backgroundColor = "#FFF";
+  game.stage.backgroundColor = "#EFF";
   game.world.setBounds(0, 0, w, h);
 
   cursors = game.input.keyboard.createCursorKeys();
   game.paused = true;
 
-  food = game.add.sprite(w/4, h/4, 'food');
-  food.scale.setTo(0.25,0.25)
-  food.anchor.setTo(0.5, 0.5);
+  // GROUPS //
+  goodies = game.add.group();
+  goodies.enableBody = true;
+  goodies.physicsBodyType = Phaser.Physics.ARCADE;
+  baddies = game.add.group();
+  baddies.enableBody = true;
+  baddies.physicsBodyType = Phaser.Physics.ARCADE;
+  smilies = game.add.group();
+  smilies.enableBody = true;
+  smilies.physicsBodyType = Phaser.Physics.ARCADE;
 
+  // INITIAL SMILEY //
+  smiley = smilies.create(w/4, h/4, 'smiley');
+  smiley.scale.setTo(0.25,0.25)
+  smiley.anchor.setTo(0.5, 0.5);
+
+  // SOUNDS //
   blip = game.add.audio('blip');
   poohit = game.add.audio('poohit');
   bonus = game.add.audio('bonus');
+
+  // SCORE LABEL //
+  scoreText = game.add.text(w/2, 50, 'score: ' + score, { 
+    font: "20px Arial", 
+    fill: "#000", 
+    align: "center" });
 
   //  Init snakeSection array
   for (var i = 1; i <= numSnakeSections-1; i++) {
@@ -117,7 +139,7 @@ function create() {
   game.physics.enable(snakeHead, Phaser.Physics.ARCADE);
 
   //PAUSE BUTTON SPACE BAR
-  pauseButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  pauseButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   pauseButton.onDown.add(
     function(){
       game.paused = !game.paused;
@@ -131,130 +153,19 @@ function update() {
   snakeHead.body.velocity.setTo(0, 0);
   snakeHead.body.angularVelocity = 0;
 
-  //NEW EMOJI SNAKE BODY PART
-  function newSmiley() {
-    var smiley = game.add.sprite(w/2, h/2, 'food');
-    smiley.scale.setTo(0.25,0.25);
-    smiley.anchor.setTo(0.5, 0.5);
-    blip.play();
-    return smiley;
-  }
-
-  function generateFood() {
-    food = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), 'food');
-    food.scale.setTo(0.25,0.25);
-    food.anchor.setTo(0.5, 0.5);
-  }
-
-  function generateBadEmoji() {
-    bademoji = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), randoBad());
-    bademoji.scale.setTo(0.25,0.25);
-    bademoji.anchor.setTo(0.5, 0.5);
-  }
-
-  function generateGoodEmoji() {
-    goodemoji = game.add.sprite(Math.floor(Math.random()* 750), Math.floor(Math.random()* 550), randoGood());
-    goodemoji.scale.setTo(0.25,0.25);
-    goodemoji.anchor.setTo(0.5, 0.5);
-  }
-
-  if (checkOverlap()) {
-    var location = snakeHead.getBounds();
-    if(location.x !== 380 && location.x !==320 && location.y !== 220 && location.y !== 280) {
-      console.log('endGame');
-    }
-  }
-
-  function newPath() {
-    var path= new Phaser.Point(w/2, h/2);
-    return path;
-  }
+  game.physics.arcade.collide(snakeHead, goodies, snakeEatsGoodies, null, this);
+  game.physics.arcade.collide(snakeHead, baddies, snakeEatsBaddies, null, this);
+  game.physics.arcade.collide(snakeHead, smilies, snakeEatsSmilies, null, this);
 
   // CHECK IF EATING FUNC
-  if (checkIfEating()) {
-    var randomInteger = Math.floor(Math.random() * 100);
-    numSnakeSections++;
-
-    snakePath.push(newPath());
-    snakeSection.push(newSmiley());
-
-    if (food) {
-      food.destroy();
-    }
-    if (bademoji) {
-      bademoji.destroy();
-    }
-    if (goodemoji) {
-      goodemoji.destroy();
-    }
-    if (randomInteger % 5 == 0 ) {
-      generateBadEmoji();
-    }
-    if (randomInteger % 6 == 0 ) {
-      generateGoodEmoji();
-    }
-    generateFood();
+  var randomInteger = Math.floor(Math.random() * 100);
+  if (randomInteger == 1 ) {
+    generateBaddie();
+  }
+  if (randomInteger == 3 ) {
+    generateGoodie();
   }
   // END CHECK IF EATING FUNC
-
-  // CHECK IF KILL EMOJI FUNC
-  if (checkIfBadEmoji()) {
-    console.log("You Lose!");
-    bademoji.destroy();
-    poohit.play();
-  }
-
-  // CHECK IF GOOD EMOJI FUNC
-  if (checkIfGoodEmoji()) {
-    console.log("Add some points!");
-    goodemoji.destroy();
-    bonus.play();
-  }
-
-  // CHECK IF EATING FUNC
-  function checkIfEating(){
-    snake = snakeHead.getBounds();
-    foody = food.getBounds();
-    if(food) {
-      return Phaser.Rectangle.intersects(snake, foody);
-    }
-  }
-
-  //CHECK FOR KILL
-  function checkIfBadEmoji() {
-    if ((!bademoji) || (!bademoji.getBounds())) {
-      return;
-    } else if (bademoji) {
-      snake = snakeHead.getBounds();
-      bad = bademoji.getBounds();
-      if(food) {
-        return Phaser.Rectangle.intersects(snake, bad);
-      }
-    }
-  }
-
-  //CHECK IF GOOD EMOJI
-  function checkIfGoodEmoji(){
-    if (!goodemoji) {
-      return;
-    }
-    snake = snakeHead.getBounds();
-    good = goodemoji.getBounds();
-    if(food) {
-      return Phaser.Rectangle.intersects(snake, good);
-    }
-  }
-
-  function checkOverlap() {
-    var boundsB = snakeHead.getBounds();
-    for (var i = 2; i < snakeSection.length; i++) {
-      var section = snakeSection[i];
-      if(Phaser.Rectangle.intersects(boundsB, section.getBounds())) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   // Uhhhhhhhhhhhhh
   snakeHead.body.velocity.copyFrom(game.physics.arcade.velocityFromAngle(snakeHead.angle, 400));
@@ -270,7 +181,6 @@ function update() {
       snakeNeck.x = (snakePath[snakeSpacer]).x;
       snakeNeck.y = (snakePath[snakeSpacer]).y;
     } else {
-      var derp = snakeSpacer * i;
       snakeSection[i].x = (snakePath[snakeSpacer * i]).x;
       snakeSection[i].y = (snakePath[snakeSpacer * i]).y;
     }
@@ -283,7 +193,62 @@ function update() {
     snakeHead.body.angularVelocity = 400;
   }
 
-  //WORLD WRAP
+  //WRORLD WRAP
   game.world.wrap(snakeHead, 0, true);
 }
 // END PHASER UPDATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// BEGIN HELPER FUNCTIONS -------------------
+function snakeEatsGoodies(snake, goodie) {
+  bonus.play();
+  console.log('ggoooooodo');
+  goodies.remove(goodie, true);
+  score += 1000;
+  scoreText.text = 'score: ' + score;
+}
+function snakeEatsBaddies(snake, baddie) {
+  poohit.play();
+  console.log('Baaaaaad');
+  gameOver();
+}
+function snakeEatsSmilies(snake, smiley) {
+  console.log(':) :) :) :)');
+  smilies.remove(smiley, true);
+  score += 10000;
+  scoreText.text = 'score: ' + score;
+  numSnakeSections++;
+  snakePath.push(newPath());
+  snakeSection.push(newSmiley());
+  generateSmiley();
+}
+function newSmiley() {
+  var smiley = game.add.sprite(w/2, h/2, 'smiley');
+  smiley.scale.setTo(0.25,0.25);
+  smiley.anchor.setTo(0.5, 0.5);
+  blip.play();
+  return smiley;
+}
+
+function generateSmiley() {
+  smiley = smilies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h, 'smiley'));
+  smiley.scale.setTo(0.25,0.25);
+  smiley.anchor.setTo(0.5, 0.5);
+}
+
+function generateBaddie() {
+  baddie = baddies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h), randoBad());
+  baddie.scale.setTo(0.25,0.25);
+  baddie.anchor.setTo(0.5, 0.5);
+}
+
+function generateGoodie() {
+  goodie = goodies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h), randoGood());
+  goodie.scale.setTo(0.25,0.25);
+  goodie.anchor.setTo(0.5, 0.5);
+}
+
+function newPath() {
+  var path= new Phaser.Point(w/2, h/2);
+  return path;
+}
+// -- END HELPER FUNCTIONS ---------------
