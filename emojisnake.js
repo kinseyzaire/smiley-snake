@@ -13,6 +13,8 @@ var bonus; //sounds
 
 var score = 0;
 var scoreText;
+var pause_label;
+var pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
 
 var w = 1200;
 var h = 700;
@@ -26,7 +28,7 @@ var game = new Phaser.Game (
 
 // RETURNS RANDOM KILL
 function randoBad() {
-  var randomNumber = Math.floor(Math.random() * 3.99)
+  var randomNumber = rand(3.99);
   if (randomNumber <= 1) {
     return 'poop'
   } else if (randomNumber <= 2) {
@@ -38,7 +40,7 @@ function randoBad() {
 
 // RETURNS RANDOM FOOD
 function randoGood() {
-  var randomNumber = Math.floor(Math.random() * 3.99)
+  var randomNumber = rand(3.99);
   if (randomNumber <= 1) {
     return 'watermelon'
   } else if (randomNumber <= 2) {
@@ -50,7 +52,7 @@ function randoGood() {
 
 // RETURNS RANDOM SMILEY
 function randoSmiley() {
-  return String((Math.floor(Math.random() * 51))+1);
+  return String((rand(51))+1);
 }
 
 // PHASER PRELOAD FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,6 +122,9 @@ function preload() {
   game.load.image('pineapple','public/assets/emojis/foods/233.png');
   game.load.image('peach','public/assets/emojis/foods/237.png');
 
+  // LOAD Smiley Snake Logo
+  game.load.image('logo','public/assets/smileysnakelogo.svg');
+
   // load audio files
   game.load.audio('blip', 'public/assets/audiofiles/Blip.wav');
   game.load.audio('poohit', 'public/assets/audiofiles/poohit.wav');
@@ -133,7 +138,6 @@ function create() {
   game.world.setBounds(0, 0, w, h);
 
   cursors = game.input.keyboard.createCursorKeys();
-  game.paused = true;
 
   // GROUPS //
   goodies = game.add.group();
@@ -157,7 +161,7 @@ function create() {
   bonus = game.add.audio('bonus');
 
   // SCORE LABEL //
-  scoreText = game.add.text(w/2, 50, 'score: ' + score, {
+  scoreText = game.add.text(0, 25, 'score: ' + score, {
     font: "20px Arial",
     fill: "#000",
     align: "center" });
@@ -182,7 +186,7 @@ function create() {
 
   // ADDING BIG SNAKE HEAD LAST, SO IT IS ON TOP
   snakeHead = game.add.sprite(w/2, h/2, 'head');
-  snakeHead.scale.setTo(0.35,0.35)
+  snakeHead.scale.setTo(0.35,0.35);
   snakeHead.anchor.setTo(0.5, 0.5);
 
   //STARTING GAME PHYSICS
@@ -191,13 +195,24 @@ function create() {
 
   //PAUSE BUTTON SPACE BAR
   pauseButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  pauseButton.onDown.add(
-    function(){
-      game.paused = !game.paused;
-    }, this
-  );
+  pauseButton.onDown.add( myPause, this );
 }
 // END PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function myPause(){
+  if ( !game.paused ) {
+    pause_label = game.add.text(w/3, h/3, pauseString, {
+      font: '30px Arial',
+      fill: 'black',
+      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+      align: 'center'
+    });
+  } else if ( game.paused ) {
+    if (pause_label)
+      pause_label.destroy();
+  }
+  game.paused = !game.paused;
+}
 
 // PHASER UPDATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function update() {
@@ -209,7 +224,7 @@ function update() {
   game.physics.arcade.collide(snakeHead, smilies, snakeEatsSmilies, null, this);
 
   // CHECK IF EATING FUNC
-  var randomInteger = Math.floor(Math.random() * 100);
+  var randomInteger = rand(100);
   if (randomInteger == 1 ) {
     generateBaddie();
   }
@@ -252,21 +267,23 @@ function update() {
 // BEGIN HELPER FUNCTIONS -------------------
 function snakeEatsGoodies(snake, goodie) {
   bonus.play();
-  // console.log('ggoooooodo');
   goodies.remove(goodie, true);
   score += 1000;
   scoreText.text = 'score: ' + score;
 }
 function snakeEatsBaddies(snake, baddie) {
+  game.paused = true;
   poohit.play();
-  // console.log('Baaaaaad');
-  gameOver();
+  if (confirm('YOU DID SO GOOD!'))
+    location.reload();
+  else
+    window.location = '/index.html';
 }
 function snakeEatsSmilies(snake, smiley) {
-  console.log(':) :) :) :)');
   smilies.remove(smiley, true);
   score += 10000;
   scoreText.text = 'score: ' + score;
+  pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
   numSnakeSections++;
   snakePath.push(newPath());
   snakeSection.push(newSmiley());
@@ -281,19 +298,19 @@ function newSmiley() {
 }
 
 function generateSmiley() {
-  smiley = smilies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h, randoSmiley()));
-  smiley.scale.setTo(0.25,0.25);
+  smiley = smilies.create(rand(w-50), rand(h-50), '10');
+  smiley.scale.setTo(0.25, 0.25);
   smiley.anchor.setTo(0.5, 0.5);
 }
 
 function generateBaddie() {
-  baddie = baddies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h), randoBad());
+  baddie = baddies.create(rand(w), rand(h), randoBad());
   baddie.scale.setTo(0.25,0.25);
   baddie.anchor.setTo(0.5, 0.5);
 }
 
 function generateGoodie() {
-  goodie = goodies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h), randoGood());
+  goodie = goodies.create(rand(w), rand(h), randoGood());
   goodie.scale.setTo(0.25,0.25);
   goodie.anchor.setTo(0.5, 0.5);
 }
@@ -301,5 +318,9 @@ function generateGoodie() {
 function newPath() {
   var path= new Phaser.Point(w/2, h/2);
   return path;
+}
+
+function rand(i) {
+  return Math.floor(Math.random() * i);
 }
 // -- END HELPER FUNCTIONS ---------------
