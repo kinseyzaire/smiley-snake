@@ -1,7 +1,7 @@
 var snakeHead; //head of snake sprite
 var snakeSection = new Array(); //array of sprites that make the snake body sections
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
-var numSnakeSections = 15; //number of snake body sections
+var numSnakeSections = 5; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
 var food;
 var bademoji;
@@ -268,8 +268,7 @@ function update() {
 function snakeEatsGoodies(snake, goodie) {
   bonus.play();
   goodies.remove(goodie, true);
-  score += 1000;
-  scoreText.text = 'score: ' + score;
+  updateScore(1000);
 }
 function snakeEatsBaddies(snake, baddie) {
   game.paused = true;
@@ -281,9 +280,7 @@ function snakeEatsBaddies(snake, baddie) {
 }
 function snakeEatsSmilies(snake, smiley) {
   smilies.remove(smiley, true);
-  score += 10000;
-  scoreText.text = 'score: ' + score;
-  pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
+  updateScore(10000);
   numSnakeSections++;
   snakePath.push(newPath());
   snakeSection.push(newSmiley());
@@ -322,5 +319,10 @@ function newPath() {
 
 function rand(i) {
   return Math.floor(Math.random() * i);
+}
+function updateScore(n) {
+  score += n;
+  scoreText.text = 'score: ' + score;
+  pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
 }
 // -- END HELPER FUNCTIONS ---------------
