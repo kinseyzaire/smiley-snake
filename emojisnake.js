@@ -28,7 +28,7 @@ var game = new Phaser.Game (
 
 // RETURNS RANDOM KILL
 function randoBad() {
-  var randomNumber = Math.floor(Math.random() * 3.99)
+  var randomNumber = rand(3.99);
   if (randomNumber <= 1) {
     return 'poop'
   } else if (randomNumber <= 2) {
@@ -40,7 +40,7 @@ function randoBad() {
 
 // RETURNS RANDOM FOOD
 function randoGood() {
-  var randomNumber = Math.floor(Math.random() * 3.99)
+  var randomNumber = rand(3.99);
   if (randomNumber <= 1) {
     return 'watermelon'
   } else if (randomNumber <= 2) {
@@ -52,7 +52,7 @@ function randoGood() {
 
 // RETURNS RANDOM SMILEY
 function randoSmiley() {
-  return String((Math.floor(Math.random() * 51))+1);
+  return String((rand(51))+1);
 }
 
 // PHASER PRELOAD FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -225,7 +225,7 @@ function update() {
   game.physics.arcade.collide(snakeHead, smilies, snakeEatsSmilies, null, this);
 
   // CHECK IF EATING FUNC
-  var randomInteger = Math.floor(Math.random() * 100);
+  var randomInteger = rand(100);
   if (randomInteger == 1 ) {
     generateBaddie();
   }
