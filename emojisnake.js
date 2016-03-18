@@ -177,7 +177,7 @@ function update() {
         if(location.x !== 380 && location.x !==320 && location.y !== 220 && location.y !== 280)  {
 
         console.log('endGame');
-        console.log(snakeHead.getBounds());
+        // console.log(snakeHead.getBounds());
       }
 
 
@@ -208,6 +208,7 @@ function update() {
         console.log("You Lose!");
         bademoji.destroy()
         poohit.play()
+        this.game.state.start("the_state_name");
       }
       if (checkIfGoodEmoji()) {
         console.log("Add some points!");
