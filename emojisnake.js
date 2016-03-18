@@ -57,7 +57,58 @@ function randoSmiley() {
 function preload() {
   // LOAD Snake Bits Emojis
   game.load.image('head','public/assets/emojis/heads/701.png');
-  game.load.image('smiley','public/assets/emojis/heads/704.png');
+  game.load.image('1','public/assets/emojis/heads/701.png');
+  game.load.image('2','public/assets/emojis/heads/702.png');
+  game.load.image('3','public/assets/emojis/heads/703.png');
+  game.load.image('4','public/assets/emojis/heads/704.png');
+  game.load.image('5','public/assets/emojis/heads/705.png');
+  game.load.image('6','public/assets/emojis/heads/706.png');
+  game.load.image('7','public/assets/emojis/heads/707.png');
+  game.load.image('8','public/assets/emojis/heads/707.png');
+  game.load.image('9','public/assets/emojis/heads/709.png');
+  game.load.image('10','public/assets/emojis/heads/710.png');
+  game.load.image('11','public/assets/emojis/heads/711.png');
+  game.load.image('12','public/assets/emojis/heads/712.png');
+  game.load.image('13','public/assets/emojis/heads/713.png');
+  game.load.image('14','public/assets/emojis/heads/714.png');
+  game.load.image('15','public/assets/emojis/heads/715.png');
+  game.load.image('16','public/assets/emojis/heads/716.png');
+  game.load.image('17','public/assets/emojis/heads/717.png');
+  game.load.image('18','public/assets/emojis/heads/718.png');
+  game.load.image('19','public/assets/emojis/heads/719.png');
+  game.load.image('20','public/assets/emojis/heads/720.png');
+  game.load.image('21','public/assets/emojis/heads/721.png');
+  game.load.image('22','public/assets/emojis/heads/722.png');
+  game.load.image('23','public/assets/emojis/heads/723.png');
+  game.load.image('24','public/assets/emojis/heads/724.png');
+  game.load.image('25','public/assets/emojis/heads/725.png');
+  game.load.image('26','public/assets/emojis/heads/726.png');
+  game.load.image('27','public/assets/emojis/heads/727.png');
+  game.load.image('28','public/assets/emojis/heads/728.png');
+  game.load.image('29','public/assets/emojis/heads/729.png');
+  game.load.image('30','public/assets/emojis/heads/730.png');
+  game.load.image('31','public/assets/emojis/heads/731.png');
+  game.load.image('32','public/assets/emojis/heads/732.png');
+  game.load.image('33','public/assets/emojis/heads/733.png');
+  game.load.image('34','public/assets/emojis/heads/734.png');
+  game.load.image('35','public/assets/emojis/heads/735.png');
+  game.load.image('36','public/assets/emojis/heads/736.png');
+  game.load.image('37','public/assets/emojis/heads/737.png');
+  game.load.image('38','public/assets/emojis/heads/738.png');
+  game.load.image('39','public/assets/emojis/heads/739.png');
+  game.load.image('40','public/assets/emojis/heads/740.png');
+  game.load.image('41','public/assets/emojis/heads/741.png');
+  game.load.image('42','public/assets/emojis/heads/742.png');
+  game.load.image('43','public/assets/emojis/heads/743.png');
+  game.load.image('44','public/assets/emojis/heads/744.png');
+  game.load.image('45','public/assets/emojis/heads/745.png');
+  game.load.image('46','public/assets/emojis/heads/746.png');
+  game.load.image('47','public/assets/emojis/heads/747.png');
+  game.load.image('48','public/assets/emojis/heads/748.png');
+  game.load.image('49','public/assets/emojis/heads/749.png');
+  game.load.image('50','public/assets/emojis/heads/750.png');
+  game.load.image('51','public/assets/emojis/heads/751.png');
+  game.load.image('52','public/assets/emojis/heads/752.png');
 
   // LOAD Bad Emojis
   game.load.image('bomb','public/assets/emojis/kills/521.png');
@@ -96,7 +147,7 @@ function create() {
   smilies.physicsBodyType = Phaser.Physics.ARCADE;
 
   // INITIAL SMILEY //
-  smiley = smilies.create(w/4, h/4, 'smiley');
+  smiley = smilies.create(w/4, h/4, randoSmiley());
   smiley.scale.setTo(0.25,0.25)
   smiley.anchor.setTo(0.5, 0.5);
 
@@ -106,9 +157,9 @@ function create() {
   bonus = game.add.audio('bonus');
 
   // SCORE LABEL //
-  scoreText = game.add.text(w/2, 50, 'score: ' + score, { 
-    font: "20px Arial", 
-    fill: "#000", 
+  scoreText = game.add.text(w/2, 50, 'score: ' + score, {
+    font: "20px Arial",
+    fill: "#000",
     align: "center" });
 
   //  Init snakeSection array
@@ -201,14 +252,14 @@ function update() {
 // BEGIN HELPER FUNCTIONS -------------------
 function snakeEatsGoodies(snake, goodie) {
   bonus.play();
-  console.log('ggoooooodo');
+  // console.log('ggoooooodo');
   goodies.remove(goodie, true);
   score += 1000;
   scoreText.text = 'score: ' + score;
 }
 function snakeEatsBaddies(snake, baddie) {
   poohit.play();
-  console.log('Baaaaaad');
+  // console.log('Baaaaaad');
   gameOver();
 }
 function snakeEatsSmilies(snake, smiley) {
@@ -222,7 +273,7 @@ function snakeEatsSmilies(snake, smiley) {
   generateSmiley();
 }
 function newSmiley() {
-  var smiley = game.add.sprite(w/2, h/2, 'smiley');
+  var smiley = game.add.sprite(w/2, h/2, randoSmiley());
   smiley.scale.setTo(0.25,0.25);
   smiley.anchor.setTo(0.5, 0.5);
   blip.play();
@@ -230,7 +281,7 @@ function newSmiley() {
 }
 
 function generateSmiley() {
-  smiley = smilies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h, 'smiley'));
+  smiley = smilies.create(Math.floor(Math.random() * w), Math.floor(Math.random() * h, randoSmiley()));
   smiley.scale.setTo(0.25,0.25);
   smiley.anchor.setTo(0.5, 0.5);
 }
