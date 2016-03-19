@@ -14,10 +14,10 @@ var bonus; //sounds
 var score = 0;
 var scoreText;
 var pause_label;
-var pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
+var pauseString = 'CURRENT SCORE\n' + score;
 
-var w = 1200;
-var h = 700;
+var w = window.innerWidth;
+var h = window.innerHeight;
 
 var game = new Phaser.Game (
   w, h, Phaser.AUTO, '', {
@@ -134,7 +134,7 @@ function preload() {
 
 // PHASER CREATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function create() {
-  game.stage.backgroundColor = "#EFF";
+  // game.stage.backgroundColor = "#EFF";
   game.world.setBounds(0, 0, w, h);
 
   cursors = game.input.keyboard.createCursorKeys();
@@ -161,10 +161,10 @@ function create() {
   bonus = game.add.audio('bonus');
 
   // SCORE LABEL //
-  scoreText = game.add.text(0, 25, 'score: ' + score, {
-    font: "20px Arial",
-    fill: "#000",
-    align: "center" });
+  scoreText = game.add.text(25, 25, 'score \n' + score, {
+    font: "30px Arial",
+    fill: "#FFF",
+    align: "left" });
 
   //  Init snakeSection array
   for (var i = 1; i <= numSnakeSections-1; i++) {
@@ -201,10 +201,9 @@ function create() {
 
 function myPause(){
   if ( !game.paused ) {
-    pause_label = game.add.text(w/3, h/3, pauseString, {
-      font: '30px Arial',
-      fill: 'black',
-      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    pause_label = game.add.text(w/4, h/4, '😍 Smiley Snake 😍\n' + pauseString + '\npress SPACE to continue', {
+      font: '50px Arial',
+      fill: '#FFF',
       align: 'center'
     });
   } else if ( game.paused ) {
@@ -213,6 +212,19 @@ function myPause(){
   }
   game.paused = !game.paused;
 }
+
+function myGameOver(){
+  if (game.input.keyboard.event)
+  pause_label = game.add.text(w/4, h/4, '💀 GAME OVER 💀\n' + pauseString + '\npress SPACE to play again', {
+    font: '50px Arial',
+    fill: '#FFF',
+    align: 'center'
+  });
+  else
+    location.reload();
+}
+
+
 
 // PHASER UPDATE FUNCTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function update() {
@@ -273,11 +285,9 @@ function snakeEatsGoodies(snake, goodie) {
 function snakeEatsBaddies(snake, baddie) {
   game.paused = true;
   poohit.play();
-  if (confirm('YOU DID SO GOOD!'))
-    location.reload();
-  else
-    window.location = '/index.html';
+  myGameOver();
 }
+
 function snakeEatsSmilies(snake, smiley) {
   smilies.remove(smiley, true);
   updateScore(10000);
@@ -295,7 +305,7 @@ function newSmiley() {
 }
 
 function generateSmiley() {
-  smiley = smilies.create(rand(w-50), rand(h-50), '10');
+  smiley = smilies.create(rand(w-50), rand(h-50), randoSmiley());
   smiley.scale.setTo(0.25, 0.25);
   smiley.anchor.setTo(0.5, 0.5);
 }
@@ -322,7 +332,7 @@ function rand(i) {
 }
 function updateScore(n) {
   score += n;
-  scoreText.text = 'score: ' + score;
-  pauseString = '😍 Smiley Snake 😍 \n Current score: ' + score + '\n  Press SPACE to continue  '
+  scoreText.text = 'score \n' + score;
+  pauseString = 'CURRENT SCORE\n' + score;
 }
 // -- END HELPER FUNCTIONS ---------------
