@@ -271,6 +271,18 @@ function update() {
     snakeHead.body.angularVelocity = 400;
   }
 
+  // ALLOWS TOUCH TURNING
+  if (game.input.pointer1.isDown){
+    if (Math.floor(game.input.x/(game.width/2)) === LEFT) {
+      //  Move COUNTER-CLOCKWISE
+      snakeHead.body.angularVelocity = -400;
+    }
+    if (Math.floor(game.input.x/(game.width/2)) === RIGHT) {
+      //  Move CLOCKWISE
+      snakeHead.body.angularVelocity = 400;
+    }
+  }
+
   //WRORLD WRAP
   game.world.wrap(snakeHead, 0, true);
 }
