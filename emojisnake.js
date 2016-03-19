@@ -273,11 +273,11 @@ function update() {
 
   // ALLOWS TOUCH TURNING
   if (game.input.pointer1.isDown){
-    if (Math.floor(game.input.x/(game.width/2)) === LEFT) {
+    if (game.input.x < (w/2)) {
       //  Move COUNTER-CLOCKWISE
       snakeHead.body.angularVelocity = -400;
     }
-    if (Math.floor(game.input.x/(game.width/2)) === RIGHT) {
+    if (game.input.x > (w/2)) {
       //  Move CLOCKWISE
       snakeHead.body.angularVelocity = 400;
     }
