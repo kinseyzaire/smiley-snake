@@ -3,9 +3,6 @@ var snakeSection = new Array(); //array of sprites that make the snake body sect
 var snakePath = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var numSnakeSections = 5; //number of snake body sections
 var snakeSpacer = 5; //parameter that sets the spacing between sections
-var food;
-var bademoji;
-var goodemoji;
 
 var blip; //sounds
 var poohit; //sounds
@@ -28,22 +25,22 @@ var game = new Phaser.Game (
 
 // RETURNS RANDOM KILL
 function randoBad() {
-  var randomNumber = rand(3.99);
-  if (randomNumber <= 1) {
-    return 'poop'
-  } else if (randomNumber <= 2) {
+  var randomNumber = rand(100);
+  if (randomNumber < 33) {
+    return 'skull'
+  } else if (randomNumber > 66) {
     return 'bomb'
   } else {
-    return 'fire'
+    return 'poop'
   }
 }
 
 // RETURNS RANDOM FOOD
 function randoGood() {
-  var randomNumber = rand(3.99);
-  if (randomNumber <= 1) {
+  var randomNumber = rand(100);
+  if (randomNumber < 33) {
     return 'watermelon'
-  } else if (randomNumber <= 2) {
+  } else if (randomNumber > 66) {
     return 'pineapple'
   } else {
     return 'peach'
@@ -114,16 +111,13 @@ function preload() {
 
   // LOAD Bad Emojis
   game.load.image('bomb','public/assets/emojis/kills/521.png');
-  game.load.image('fire','public/assets/emojis/kills/647.png');
+  game.load.image('skull','public/assets/emojis/kills/647.png');
   game.load.image('poop','public/assets/emojis/kills/527.png');
 
   // LOAD Good Emojis
   game.load.image('watermelon','public/assets/emojis/foods/229.png');
   game.load.image('pineapple','public/assets/emojis/foods/233.png');
   game.load.image('peach','public/assets/emojis/foods/237.png');
-
-  // LOAD Smiley Snake Logo
-  game.load.image('logo','public/assets/smileysnakelogo.svg');
 
   // load audio files
   game.load.audio('blip', 'public/assets/audiofiles/Blip.wav');
@@ -281,6 +275,11 @@ function update() {
       //  Move CLOCKWISE
       snakeHead.body.angularVelocity = 400;
     }
+  }
+
+  // ALLOWS TWO FINGER TOUCH PAUSE
+  if (game.input.pointer2.isDown){
+    myPause();
   }
 
   //WRORLD WRAP
